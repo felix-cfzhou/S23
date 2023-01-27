@@ -189,7 +189,7 @@
 
 \setcounter{secnumdepth}{2}
 \renewcommand\thesection{Problem \arabic{section}.}
-\renewcommand\thesubsection{(\alph{subsection})}
+\renewcommand\thesubsection{(\arabic{subsection})}
 
 
 \begin{document}
@@ -259,8 +259,170 @@ Finally,
 
 \clearpage
 \section{}
+First consider the special case of $m=n$.
+Clearly,
+we must have
+\begin{align*}
+  \E[S_m / S_n]
+  &= 1.
+\end{align*}
+Note we use the assumption here that $\E[X_1^{-1}]$ exists.
+
+By the linearity of expectation,
+\begin{align*}
+  \E[S_m / S_n]
+  &= \sum_{i=1}^m \E[X_i/S_n].
+\end{align*}
+However,
+since each $X_i$ is iid,
+we conclude that
+\[
+  \E[X_i/S_n] = \frac1n
+\]
+so that
+\[
+  \E[S_m / S_n] = \frac{m}{n}
+\]
+as desired.
+
+\clearpage
 \section{}
+We remark that
+\begin{align*}
+  \P\set{N>n}
+  &= \P\set*{\sum_{i=1}^n X_i \leq x} \\
+  &=: p_{n, x}.
+\end{align*}
+
+We argue by induction that $p_{n, x} = \frac{x^n}{n!}$.
+It is clear that $p_{1, x} = x$.
+Now suppose the induction hypothesis holds up to $n-1$.
+We have
+\begin{align*}
+  p_n
+  &= \int_0^x \P\set*{\sum_{i=1}^{n-1} X_i\leq x-z} p(z) dz &&\text{$p(z)$ density of $U[0, 1]$} \\
+  &= \int_0^x p_{n, x-z} dz \\
+  &= \int_0^x \frac{(x-z)^{n-1}}{(n-1)!} \\
+  &= \left[ -\frac{(x-z)^n}{n!} \right]_0^x \\
+  &= \frac{x^n}{n!}.
+\end{align*}
+
+By induction,
+we conclude the proof.
+
+In order to compute the expectation,
+recall the identity
+\begin{align*}
+  \E[N]
+  &= \sum_{n=1}^\infty \P\set{N = n}\cdot n \\
+  &= \sum_{n=1}^\infty \P\set{N\geq n} \\
+  &= \sum_{n=0}^\infty \P\set{N > n} \\
+  &= \sum_{n=0}^\infty \frac{x^n}{n!} \\
+  &= \boxed{e^x}.
+\end{align*}
+We can similarly compute the variance as
+\begin{align*}
+  \E[N^2]
+  &= \sum_{n=1}^\infty \P\set{N = n}\cdot n^2 \\
+  &= \sum_{n=1}^\infty \P\set{N\geq n} [n^2 - (n-1)^2] \\
+  &= \sum_{n=0}^\infty \P\set{N > n} [2n+1] \\
+  &= 2 \sum_{n=1}^\infty \P\set{N > n}\cdot n + \sum_{n=0}^\infty \P\set{N>n} \\
+  &= 2x \sum_{n=0}^\infty \frac{x^n}{n!} + e^x \\
+  &= e^x(2x+1).
+\end{align*}
+It follows that the variance is
+\begin{align*}
+  \Var[N]
+  &= \boxed{e^x(2x+1) - e^{2x}}.
+\end{align*}
+
+\clearpage
 \section{}
+let us determine the density of $XY, Z^2$ separately
+and recall that the joint density is just the product of densities
+since $XY, Z^2$ are independent.
+
+Let $F_{\xi}, p_{\xi}$ denote the distribution function
+and density of the random variable $\xi$,
+respectively.
+
+We have
+\begin{align*}
+  F_{XY}(t)
+  &= \P\set{X\leq t} + \int_t^1 \P\set{Y\leq t/x} p_X(x) dx \\
+  &= t + \int_t^1 \frac{t}{x} dx \\
+  &= t + \left[ t\log x \right]_t^1 \\
+  &= t - t\log t. &&t\in [0, 1]
+\end{align*}
+It follows that
+\begin{align*}
+  p_{XY}(t)
+  &= \frac{d}{dt} F_{XY}(t) \\
+  &= 1 - \log t - 1 \\
+  &= -\log t. &&t\in [0, 1]
+\end{align*}
+Similarly,
+\begin{align*}
+  F_{Z^2}(t) &= \sqrt t &&t\in [0, 1] \\
+  p_{Z^2}(t) &= \frac1{2\sqrt t}. &&t\in (0, 1]
+\end{align*}
+
+The joint density for $t_1, t_2\in [0, 1], t_2\neq 0$ is thus
+\[
+  \boxed{p_{XY, Z^2}(t_1, t_2) = - \frac{\log t_1}{2\sqrt{t_2}}}.
+\]
+
+We now compute the desired probability
+\begin{align*}
+  \P\set{XY < Z^2}
+  &= \int_0^1 \P\set{XY\leq t} p_{Z^2} (t) dt \\
+  &= \int_0^1 (t- t\log t) \frac1{2\sqrt t} dt \\
+  &= \frac12 \int_0^1 \sqrt t - \sqrt t \log t dt \\
+  &= \left[ - \frac{t^{3/2} (3\log x - 5)}9 \right]_0^1 \\
+  &= \frac59
+\end{align*}
+as desired.
+
+\clearpage
 \section{}
+\subsection{}
+Write $N$ to be the random variable indicating the number of draws until we stop.
+Clearly for $n\leq 3$,
+\[
+  \P\set{N=n} = 0.
+\]
+
+Let us compute the distribution function $F(n) := \P\set{N\leq n}$.
+This the probability that after $n$ draws,
+we have at least one card from each shade.
+This is equal to 1 minus the probability that we see at most 3 shades.
+Let $p_1, p_2, p_3$ denote the probability we do not see 1, 2, 3 shades for some FIXED shades
+(it is symmetric so it does not matter the particular choice of shades),
+respectively.
+By the inclusion-exclusion principle,
+the desired probability is thus
+\begin{align*}
+  F(n)
+  &= 1 - \binom41 p_1 + \binom42 p_2 - \binom43 p_3 \\
+  &= 1- 4 \left( \frac34 \right)^n + 6 \left( \frac24 \right)^n - 4 \left( \frac14 \right)^n. &&n\geq 4
+\end{align*}
+This is because we need to count for the $\binom41$ ways we avoid a particular shade,
+but avoid double counting the $\binom42$ ways we avoid a particular pair of shades,
+and adjust for the overcorrection of the $\binom43$ ways we avoid any triple of shades.
+
+Then for $n\geq 4$,
+\begin{align*}
+  \P\set{N=n}
+  &= F(n) - F(n-1) \\
+  &= - 4 \left( \frac34 \right)^n + 6 \left( \frac24 \right)^n - 4 \left( \frac14 \right)^n
+  + 4 \left( \frac34 \right)^{n-1} - 6 \left( \frac24 \right)^{n-1} + 4 \left( \frac14 \right)^{n-1} \\
+  &= \boxed{\left( \frac34 \right)^{n-1} - 3 \left( \frac24 \right)^{n-1} + 3 \left( \frac14 \right)^{n-1}}.
+\end{align*}
+
+\subsection{}
+It is easy to see the that the sum of probabilities tend to 1
+since we computed the individual probabilities as the difference between consecutive values of the distribution function.
+Thus the partial sum up to $n$ is just $F(n)$
+and $F(n)\to 1$ as $n\to \infty$ by inspection.
 
 \end{document}
