@@ -206,7 +206,7 @@
 
 \section{}
 \subsection{Mean}
-Let $X_1, \dots, X_{n-k}$ be random variables denoting the eval of each of the $n-k$ remaining balls
+Let $X_1, \dots, X_{n-k}$ be random variables denoting the value of each of the $n-k$ remaining balls
 and $X = \sum_{i=1}^{n-k} X_i$ be their sum.
 By the linearity of expectation,
 \begin{align*}
@@ -295,7 +295,7 @@ We remark that
 \end{align*}
 
 We argue by induction that $p_{n, x} = \frac{x^n}{n!}$.
-It is clear that $p_{1, x} = x$.
+It is clear that $p_{0, x} = 1$ since $x > 0$.
 Now suppose the induction hypothesis holds up to $n-1$.
 We have
 \begin{align*}
@@ -325,15 +325,15 @@ We can similarly compute the variance as
   \E[N^2]
   &= \sum_{n=1}^\infty \P\set{N = n}\cdot n^2 \\
   &= \sum_{n=1}^\infty \P\set{N\geq n} [n^2 - (n-1)^2] \\
-  &= \sum_{n=0}^\infty \P\set{N > n} [2n+1] \\
-  &= 2 \sum_{n=1}^\infty \P\set{N > n}\cdot n + \sum_{n=0}^\infty \P\set{N>n} \\
-  &= 2x \sum_{n=0}^\infty \frac{x^n}{n!} + e^x \\
-  &= e^x(2x+1).
+  &= \sum_{n=0}^\infty \P\set{N > n} [2n-1] \\
+  &= 2 \sum_{n=1}^\infty \P\set{N > n}\cdot n - \sum_{n=0}^\infty \P\set{N>n} \\
+  &= 2x \sum_{n=0}^\infty \frac{x^n}{n!} - e^x \\
+  &= e^x(2x-1).
 \end{align*}
 It follows that the variance is
 \begin{align*}
   \Var[N]
-  &= \boxed{e^x(2x+1) - e^{2x}}.
+  &= \boxed{e^x(2x-1) - e^{2x}}.
 \end{align*}
 
 \clearpage
@@ -343,7 +343,7 @@ and recall that the joint density is just the product of densities
 since $XY, Z^2$ are independent.
 
 Let $F_{\xi}, p_{\xi}$ denote the distribution function
-and density of the random variable $\xi$,
+and density of a random variable $\xi$,
 respectively.
 
 We have
