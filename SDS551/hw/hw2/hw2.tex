@@ -205,6 +205,80 @@
 \end{center}
 
 \section{}
+First,
+we note that the random walk $S$ can only return to 0
+at an even time step.
+
+We wish to count the number of binary strings of length $2n$
+that is \emph{balanced} (equal number of 0s and 1s)
+subject to the condition that any prefix is not balanced.
+This corresponds to a random walk which returns to 0 at time $2n$
+but not before that.
+
+By symmetry,
+it suffices to double the number of binary strings
+on $n$ 1s and $n-1$ 0s such that any prefix contains strictly more 1s than 0s
+(the $0$-th character is prepended as 0 to ensure balance).
+We claim that there are
+\[
+  \frac1{2n-1} \binom{2n-1}{n-1}
+\]
+such strings.
+
+Before we prove the claim.
+Note that if the claim holds,
+then we are done.
+This is because the desired probability is then given by
+\begin{align*}
+  \frac{\frac1{2n-1} \binom{2n-1}{n-1} \cdot 2}{2^{2n}}
+  &= \frac1{2n-1} \binom{2n}{n} 2^{-2n}
+\end{align*}
+as required.
+
+To see the claim,
+we observe that there is a bijection between 
+the number of binary strings
+on $n$ 1s and $n-1$ 0s such that any prefix contains strictly more 1s than 0s
+and the number of binary strings
+on $n$ 1s and $n$ 0s such that any prefix contains at least as many 1s as 0s.
+Indeed,
+the bijection is obtained by prepending a 0 to the $(2n-1)$-bit string.
+But the cardinality of the latter set
+is precisely given by the well-known $(n-1)$-th Catalan number
+\[
+  C_n
+  = \frac1{2n-1} \binom{2n-1}{n-1}
+  = \frac1{2n-1} \binom{2n-1}{n}.
+\]
+
+Finally,
+we have
+\begin{align*}
+  \E[T^\alpha]
+  &= \sum_{n=1}^\infty \P\set{T=2n}\cdot (2n)^\alpha \\
+  &= \sum_{n=1}^\infty \frac{(2n)^\alpha}{2n-1} \binom{2n}{n} 2^{-2n} \\
+  &= \sum_{n=1}^\infty \frac{(2n)^\alpha}{2n-1} \frac{(2n)!}{n!n!} 2^{-2n} \\
+  &\approx \sum_{n=1}^\infty \frac1{2n-1} \frac{(2n)^{2n+\frac12+\alpha} e^{-2n} \sqrt{2\pi}}{\left( n^{n+\frac12} e^{-n} \sqrt{2\pi} \right)^2} 2^{-2n} \\
+  &= \frac1{\sqrt{2\pi}} \sum_{n=1}^\infty \frac1{2n-1} \frac{(2n)^{2n+\frac12+\alpha}}{n^{2n+1}} 2^{-2n} \\
+  &= \frac{2^{\frac12+\alpha}}{\sqrt{2\pi}} \sum_{n=1}^\infty \frac1{2n-1} n^{\alpha-\frac12}.
+\end{align*}
+
+For $\alpha < \frac12$,
+this is series is bounded above by a convergent $p$-series
+\[
+  \sum_{n\geq 1} \frac1{n^p}
+\]
+for some $p > 1$.
+On the other hand,
+for $\alpha \geq \frac12$,
+this series is bounded below by the divergent harmonic series
+\[
+  \sum_{n\geq 1} \frac1n.
+\]
+
+This concludes the proof.
+
+\clearpage
 \section{}
 \section{}
 \section{}
