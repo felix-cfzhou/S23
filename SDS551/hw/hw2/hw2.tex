@@ -280,7 +280,124 @@ This concludes the proof.
 
 \clearpage
 \section{}
+We have that
+\begin{align*}
+  \P\set{R_{n} = R_{n-1} + 1}
+  &= \P\set{S_n\neq S_{n-1}, \dots, S_n\neq S_0} \\
+  &= \P\set{S_1\neq 0, \dots, S_n\neq 0} \\
+  &= \P\set{S_1S_2\dots S_n\neq 0}.
+\end{align*}
+Note that here we used the fact
+\[
+  \sum_{i=1}^k X_i \eq{d} \sum_{i=1}^k X_{n-i+1}
+\]
+since the $X_i$'s are iid.
+
+Now let $x_n := \E[R_n]$ and $p_n := \P\set{R_n = R_{n-1} + 1}$.
+By the downward continuity of measure,
+we have that as $n\to \infty$,
+\[
+  p_n\to \ell =: \P\set{\forall k\geq 1, S_k=0}.
+\]
+
+By the law of total expectation,
+\begin{align*}
+  x_n
+  &= \E[R_n\mid R_n=R_{n-1}]\cdot (1-p_n) + \E[R_n\mid R_n=R_{n-1}+1]\cdot p_n \\
+  &= x_{n-1} (1-p) + (x_{n-1} + 1) p_n \\
+  &= x_{n-1} + p_n \\
+  &= \sum_{k=1}^n p_k.
+\end{align*}
+
+Recall that if a real-valued sequence converges,
+then the average of the partial sums also converge to the same limit.
+It follows that
+\[
+  \frac1n \E[R_n]
+  = \frac1n \sum_{k=1}^n p_k
+  \to \ell
+\]
+as $n\to \infty$.
+
+Finally,
+we wish to show that in the case of simple random walks,
+\[
+  \ell = \abs{p-q}.
+\]
+Without loss of generality,
+let us assume that $p\geq q$
+and show that $\ell = p-q$.
+
+Equivalently,
+we can show that the probability of eventually hitting 0 is $2q$.
+Then $\ell = 1-2q = p-q$.
+Let $p_k$ denote the probability of eventually hitting 0
+starting at position $k > 0$.
+Then we have the recurrence
+\begin{align*}
+  p_1
+  &= q + p p_2 \\
+  &= q + p p_1^2.
+\end{align*}
+To see this remark that the increments of the random walk are independent,
+thus to arrive at 0 starting at 2
+is equivalent to two independent random walks hitting 0 when starting at 1.
+
+Solving this quadratic equation yields solutions $1, \frac qp$.
+In the case of $p\geq q$,
+we take $\frac qp$
+and in the case of $p < q$,
+we take 1.
+The probability of eventually returning to 0
+assuming that $p\geq q$ is thus
+\[
+  q\cdot 1 + p\cdot \frac qp = 2q
+\]
+as desired.
+To see this,
+we condition on the first step being to the left or the right
+and apply the appropriate solution to the quadratic equation above.
+
+\clearpage
 \section{}
+From our work in class,
+we know that the expected hitting time for $p=q=\frac12$ is infinity.
+But then the expected hitting time for $p<q$ can only be greater
+and is thus not finite either.
+We focus on the case where $p>q$.
+
+Let us rewrite this as the expected hitting time of 0 starting at position $b$
+by flipping the values of $p, q$.
+Our strategy to compute this value is to compute the expected hitting time by setting an artificial boundary at $n$
+and then letting $n\to \infty$,
+similar to our work in class.
+This strategy is justified by the monontone convergence theorem.
+
+Let $T_{b, n}$ denote the hitting time of one of two barriers $0, n$
+starting at $b\in [0, n]$.
+We have
+\begin{align*}
+  \E[T_{b, n}]
+  &= q\E[T_{b-1, n}] + p\E[T_{b+1, n}] + 1 \\
+  \E[T_{0, n}] &= 0 \\
+  \E[T_{n, n}] &= 0.
+\end{align*}
+
+Solving this recurrence under the boundary conditions yield
+\begin{align*}
+  \E[T_{b, n}]
+  &= \frac{b}{q-p} - \frac{n}{q-p}\cdot \frac{\left( \frac qp \right)^b - 1}{\left( \frac qp \right)^n - 1} \\
+  &\to \frac{b}{q-p}. &&n\to \infty
+\end{align*}
+
+Keeping in mind that we flipped the values of $p, q$,
+we conclude that the desired expectation is
+\[
+  \frac{b}{p-q}
+\]
+as desired.
+
+\clearpage
 \section{}
 \section{}
 
