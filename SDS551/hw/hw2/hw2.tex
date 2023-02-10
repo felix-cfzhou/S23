@@ -399,6 +399,117 @@ as desired.
 
 \clearpage
 \section{}
+Write $X_n$ to denote the size of the population at time $n$.
+Then
+\[
+  \P\set{T=n} = \P\set{X_n=0} - \P\set{X_{n-1}=0}
+\]
+with the base case $\P\set{T=0} = 0$.
+
+Let $\eta_n := \P\set{X_n=0}$.
+From our work in class,
+\begin{align*}
+  \eta_0 &= 0 \\
+  \eta_{n+1}
+  &= \sum_{k=0}^\infty \eta_n^k f(k) \\
+  &= \sum_{k=0}^\infty \eta_n^k\cdot qp^k \\
+  &= \frac{q}{1-\eta_n p}.
+\end{align*}
+
+Define $r := p/q$.
+We argue by induction that
+\begin{align*}
+  \eta_n =
+  \begin{cases}
+    \frac{n}{n+1}, &p=q=\frac12 \\
+    \frac{r^n-1}{r^{n+1}-1}, &p\neq q
+  \end{cases}
+\end{align*}
+
+\underline{Case I: $p=q=\frac12$}
+We see that the formula is correct for the base case of $n=0$.
+Suppose inductively that the formula holds up to some $n\in \N$.
+Then
+\begin{align*}
+  \eta_{n+1}
+  &= \frac{q}{1-\eta_n p} \\
+  &= \frac{1}{1-\eta_n} \\
+  &= \frac{n+1}{2(n+1) - n} \\
+  &= \frac{n+1}{n+2}
+\end{align*}
+as required.
+
+In this case for $n\geq 1$,
+\begin{align*}
+  \P\set{T=n}
+  &= \frac{n}{n+1} - \frac{n-1}{n} \\
+  &= \frac{n^2 - (n^2-1)}{n(n+1)} \\
+  &= \boxed{\frac{1}{n(n+1)}}. 
+\end{align*}
+
+Now,
+\begin{align*}
+  \E[T]
+  &= \sum_{n\geq 1} n\cdot \frac1{n(n+1)} \\
+  &= \sum_{n\geq 1} \frac1{n+1}
+\end{align*}
+is the diverging harmonic series so the expectation is infinite.
+
+\underline{Case II: $p\neq q$}
+We see that the formula is correct for the base case of $n=0$.
+Suppose inductively that the formula holds up to some $n\in \N$.
+Then
+\begin{align*}
+  \eta_{n+1}
+  &= \frac{q}{1-\eta_n p} \\
+  &= \frac{q}{1- \frac{r^n-1}{r^{n+1}-1} p} \\
+  &= \frac{r^{n+1}-1}{\frac1q (r^{n+1}-1) - (r^n-1)r} \\
+  &= \frac{r^{n+1}-1}{r^{n+1} (1/q-1) + (r-1/q)} \\
+  &= \frac{r^{n+1}-1}{r^{n+2}-1}
+\end{align*}
+as desired.
+
+In this case for $n\geq 1$,
+\begin{align*}
+  \P\set{T=n}
+  &= \frac{r^n-1}{r^{n+1}-1} - \frac{r^{n-1}-1}{r^{n}-1} \\
+  &= \boxed{\frac{r^{n-1} (r-1)^2}{(r^{n+1}-1)(r^n-1)}}.
+\end{align*}
+
+Recall for non-negative discrete random variables
+we have the identity
+\begin{align*}
+  \E[T]
+  &= \sum_{n\geq 1} n\cdot \P\set{T=n} \\
+  &= \sum_{n\geq 1} \P\set{T\geq n} \\
+  &= \sum_{n\geq 1} 1- \P\set{T<n} \\
+  &= \sum_{n\geq 1} 1- \P\set{T\leq n-1} \\
+  &= \sum_{n\geq 0} 1- \P\set{T\leq n} \\
+  &= \sum_{n\geq 0} 1- \P\set{X_n = 0} \\
+  &= \sum_{n\geq 0} 1 - \frac{r^{n} - 1}{r^{n+1}-1} \\
+  &= \sum_{n\geq 0} \frac{r^{n+1} - 1 - r^{n} + 1}{r^{n+1}-1} \\
+  &= \sum_{n\geq 0} \frac{r^n(r - 1)}{r^{n+1}-1}.
+\end{align*}
+
+For $r < 1$,
+this series converges by the ratio test
+\begin{align*}
+  \frac{r^{n+1}(r-1)}{r^{n+2}-1}\cdot \frac{r^{n+1}-1}{r^n (r-1)}
+  &= \frac{r^{n+2} - r}{r^{n+1}-1} \\
+  &\to r \\
+  &< 1.
+\end{align*}
+
+For $r > 1$,
+the series diverges as it is element-wise bounded below by a divergent series
+\[
+  \frac{r^n (r-1)}{r^{n+1} - 1}
+  \geq \frac{r^n (r-1)}{r^{n+1}}
+  = \frac{r-1}{r}
+  \not\to 0.
+\]
+
+\clearpage
 \section{}
 
 \end{document}
