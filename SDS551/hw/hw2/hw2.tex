@@ -511,5 +511,99 @@ the series diverges as it is element-wise bounded below by a divergent series
 
 \clearpage
 \section{}
+We use the probability generating function
+\[
+  \Psi_t(x)
+  := \E\left[ x^{G_t} \right]
+\]
+as the main tool to tackle this problem.
+
+First,
+let us show that
+\[
+  \Psi_{t+1}(x) = \Psi_1(\Psi_t(x)).
+\]
+Indeed,
+consider the more general scenario that $Z = \sum_{k=1}^N Y_k$
+where $Y_k, N$ are non-negative discrete variables
+such that the $Y_k$'s are iid.
+We claim that the generating function $\Psi_Z$ of $Z$ satisfies
+\[
+  \Psi_Z(x) = \Psi_N(\Psi_Y(x)).
+\]
+First recall that the generating function of independent random variables is the product
+\[
+  \Psi_{\sum_{k=1}^m Y_k}(x)
+  = \E\left[ x^{\sum_{k=1}^m Y_k} \right]
+  = \prod_{k=1}^n \E\left[ x^{Y_k} \right].
+\]
+Observe here that independence is crucial so that we can factorize the expected values.
+We can now compute
+\begin{align*}
+  \Psi_Y(x)
+  &= \sum_{k\geq 0} x^k \P\set{Y = k} \\
+  &= \sum_{k\geq 0} x^k \sum_{m\geq 0} \P\set{Y = k\mid N=m}\P\set{N=m} \\
+  &= \sum_{m\geq 0} \P\set{N=m}\cdot \sum_{k\geq 0} x^k \P\set{Y = k\mid N=m} \\
+  &= \sum_{m\geq 0} \P\set{N=m}\cdot \Psi_{\sum_{k=1}^m Y_k}(x) \\
+  &= \sum_{m\geq 0} \P\set{N=m}\cdot \Psi_Y(x)^k \\
+  &= \Psi_N(\Psi_Y(x)).
+\end{align*}
+
+Recall that we can write
+\[
+  X_{t+1} = \sum_{k=1}^{X_t} X_{t+1, k}
+\]
+where $X_{t+1, k}\sim \Po(2)$ iid.
+It follows that
+\begin{align*}
+  \Psi_{t+1}(x)
+  &= \Psi_t(\Psi_1(x)) \\
+  &\dots \\
+  &= (\Psi_1\circ \dots\circ \Psi_1) (x) \\
+  &= \Psi_1(\Psi_t(x)).
+\end{align*}
+
+Next,
+we remark that
+\[
+  \P\set{G_t=1} = \Psi_t'(0).
+\]
+To see this observe that
+\begin{align*}
+  \Psi_t'(0)
+  &= \sum_{k\geq 1} k(0)^{k-1} \P\set{G_t=k} \\
+  &= \P\set{G_t=1}.
+\end{align*}
+
+By the chain rule,
+\begin{align*}
+  \Psi_{t+1}'(x)
+  &= \frac{d}{dx} \Psi_1(\Psi_t(x)) \\
+  &= \Psi_1'(\Psi_t(x))\cdot \Psi_t'(x) \\
+  \Psi_{t+1}'(0)
+  &= \Psi_1'(\Psi_t(0))\cdot \Psi_t'(0).
+\end{align*}
+It follows that
+\begin{align*}
+  \rho_t
+  &:= \frac{\P\set{G_{t+1} = 1}}{\P\set{G_t=1}} \\
+  &= \Psi_1'(\Psi_t(0)) \\
+  &= \Psi_1'(\eta_t) &&\eta_t := \P\set{G_t = 0} \\
+  &= \sum_{k\geq 1} k\eta_t^{k-1} \P\set{G_1 = k} \\
+  &= 2 \sum_{k\geq 1} \frac{(2\eta_t)^{(k-1)} e^{-2}}{(k-1)!} \\
+  &= 2 \exp(2\eta_t-2) \\
+  &\to 2\exp(2\eta - 2).
+\end{align*}
+
+Finally,
+from our work in class,
+the ultimate extinction probability satisfies
+\[
+  \eta = \Psi_1(\eta) = \exp(2\eta-2).
+\]
+Hence
+\[
+  \boxed{\lim_{t\to \infty} \rho_t = 2\eta}.
+\]
 
 \end{document}
