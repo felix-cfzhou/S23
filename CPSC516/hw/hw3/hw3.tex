@@ -1,0 +1,285 @@
+\documentclass[10pt]{article} 
+
+\usepackage{fullpage}
+\usepackage{bookmark}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{physics}
+% \usepackage{unicode-math}
+\usepackage{dsfont}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage[noabbrev, nameinlink]{cleveref}
+\usepackage[most]{tcolorbox}
+\usepackage{empheq}
+\usepackage[amsmath,standard,thmmarks]{ntheorem} 
+\usepackage{bm}
+\usepackage{tabularray}
+\usepackage{pdfpages}
+\usepackage{float}
+
+\setlist[enumerate]{topsep=1pt,itemsep=0pt,partopsep=1ex,parsep=1ex}
+
+% floor, ceiling, set
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\set}{\lbrace}{\rbrace}
+\DeclarePairedDelimiter{\iprod}{\langle}{\rangle}
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+\let\abs\relax
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\let\norm\relax
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\bdy}{bdy}
+\DeclareMathOperator{\Lim}{Lim}
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\dual}{dual}
+\DeclareMathOperator{\opt}{opt}
+\DeclareMathOperator{\cone}{cone}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\NB}{NB}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\indeg}{indeg}
+\DeclareMathOperator{\outdeg}{outdeg}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\odd}{odd}
+\DeclareMathOperator{\OPT}{OPT}
+\DeclareMathOperator{\aff}{aff}
+\DeclareMathOperator{\ri}{ri}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Fix}{Fix}
+\DeclareMathOperator{\Prox}{Prox}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\zer}{zer}
+\DeclareMathOperator{\fl}{fl}
+\DeclareMathOperator{\mach}{mach}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Softmax}{Softmax}
+\DeclareMathOperator{\Po}{Po}
+\DeclareMathOperator{\Be}{Be}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Diag}{Diag}
+
+\newcommand{\code}[1]{\lstinline{#1}}
+
+\newcommand{\ones}{\mathds{1}}
+
+\newcommand{\up}{\uparrow}
+\newcommand{\down}{\downarrow}
+\newcommand{\tends}[1]{\xrightarrow{#1}}
+\newcommand{\eq}[1]{\stackrel{#1}{=}}
+\newcommand{\Geq}[1]{\stackrel{#1}{\geq}}
+\newcommand{\Leq}[1]{\stackrel{#1}{\leq}}
+
+% commonly used sets
+\newcommand{\m}{\mathds{m}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+\renewcommand{\S}{\mathcal{S}}
+
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\w}{\mathbf{w}}
+\renewcommand{\c}{\mathbf{c}}
+\renewcommand{\d}{\mathbf{d}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\f}{\mathbf{f}}
+
+\newcommand{\h}{\vec{h}}
+\newcommand{\p}{\vec{p}}
+\renewcommand{\a}{\vec{a}}
+\renewcommand{\b}{\vec{b}}
+\renewcommand{\t}{\vec{t}}
+\renewcommand{\u}{\vec{u}}
+\renewcommand{\v}[1]{\vec{#1}}
+
+\newcommand{\sset}{\subseteq}
+\newcommand{\mcal}{\mathcal}
+\newcommand{\mscr}{\mathscr}
+\newcommand{\mbf}{\mathbf}
+\newcommand{\mat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\eff}{\text{eff}}
+
+\newcommand{\NP}{\ensuremath{\mathcal{NP}}}
+
+\newtcbtheorem[
+  number within=section,
+  crefname={lemma}{Lemma}
+]
+{lem}
+{Lemma}%
+{
+  theorem style=break,
+  sharp corners=all,
+  colframe=Red,
+  colback={White!95!Red},
+  coltitle=black,
+  fonttitle=\bfseries,
+  beforeafter skip=12pt
+}{lem}
+
+\newtcbtheorem[no counter]{pf}{Proof}%
+{
+  breakable,
+  blanker,
+  left=5.5mm,
+  borderline west={2pt}{0pt}{NavyBlue!80!white},
+  after upper=\null\nobreak\hfill\ensuremath{\square},
+  colback=white,
+  colframe=white,
+  coltitle=black,
+  fonttitle=\it,
+  parbox=false,
+  after skip=12pt
+}{pf}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+    frame=tb,
+    language=Python,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=none,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=3
+}
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{8pt}
+
+\setcounter{secnumdepth}{2}
+\renewcommand\thesection{P.\arabic{section}.}
+\renewcommand\thesubsection{(\alph{subsection})}
+
+
+\begin{document}
+
+\begin{center}
+    {\Large\textbf{Yale University}}\\
+    \vspace{3mm}
+    {\Large\textbf{CPSC 516, Spring 2023}}\\
+    \vspace{2mm}
+    {\Large\textbf{Assignment 3}}\\
+    \vspace{3mm}
+    \textbf{Chang Feng (Felix) Zhou cz397}
+\end{center}
+
+\section{}
+\subsection{}
+The gradient and Hessian are given by
+\begin{align*}
+  \grad f(x)
+  &= \log x \\
+  \grad^2 f(x)
+  &= \Diag(1/x_1, \dots, 1/x_n).
+\end{align*}
+Here the logarithm is applied component-wise
+and the $\Diag: \R^n\to \R^{n\times n}$ maps a vector
+to the diagonal matrix whose non-zero entries are precisely given by the input vector.
+
+\subsection{}
+By our work in class,
+$f$ is strictly convex if and only if $\grad^2 f\succ 0$.
+Indeed,
+the eigenvalues of $\grad^2 f$ are given by
+\[
+  1/x_1, \dots, 1/x_n
+\]
+and are all positive over $\R_{>0}^n$.
+Thus $f$ is indeed strictly convex.
+
+\subsection{}
+Suppose towards a contradiction that $f$ is $\alpha$-strongly convex for some $\alpha > 0$.
+Let $e_1$ be the vector which is all zero except for a one in the first entry.
+We have for all $\lambda > 0$,
+\begin{align*}
+  f(\lambda e_1 + \lambda e_1) &\geq f(\lambda e_1) + \iprod{\grad f(\lambda e_1), \lambda e_1} + \frac\alpha2 \norm{\lambda e_1}_2^2 \\
+  2\lambda \log(2\lambda) - 2\lambda &\geq \lambda \log \lambda - \lambda + \lambda \log \lambda + \frac\alpha2 \lambda^2 \\
+  2\lambda \log\left( \frac{2\lambda}\lambda \right) &\geq \lambda + \frac\alpha2 \lambda^2 \\
+  2\log2 &\geq 1 + \frac\alpha2 \lambda.
+\end{align*}
+This is a contradiction since we can make the RHS arbitrarily large
+while the LHS stays constant.
+
+\subsection{}
+\begin{align*}
+  D_f(x, y)
+  &:= f(y) - f(x) - \iprod{\grad f(x), y-x} \\
+&= \sum_{i=1}^n y_i\log y_i- y_i - x_i\log x_i + x_i - (y_i-x_i)\log x_i \\
+  &= \sum_i y_i\log y_i- y_i + x_i - y_i \log x_i \\
+  &= \boxed{\sum_{i=1}^n y_i \log \frac{y_i}{x_i} + x_i - y_i}.
+\end{align*}
+
+By inspection,
+this is not symmetric for all $x, y > 0$.
+
+\subsection{}
+We wish to show that
+\begin{align*}
+  D_f(x, y) &\geq \frac12 \norm{y-x}_1^2
+\end{align*}
+for all $x, y\in \Delta^n := \set{x\in \R_{>0}^n: \sum_{i=1}^n x_i = 1}$.
+First,
+we remark that in $\Delta^n$,
+\[
+  D_f(x, y) = \sum_{i=1}^n y_i \log \frac{y_i}{x_i}
+  = \KL(y\| x).
+\]
+Now,
+Pinsker's inequality states that
+\[
+  D_f(x, y) = \KL(y\| x)\geq \frac12 \norm{y-x}_1^2.
+\]
+and so $f$ is 1-strongly convex with respect to the 1-norm,
+as desired.
+
+\clearpage
+\section{}
+\subsection{}
+\subsection{}
+\subsection{}
+\subsection{}
+\subsection{}
+
+\end{document}
