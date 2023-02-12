@@ -75,6 +75,7 @@
 \DeclareMathOperator{\Be}{Be}
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Diag}{Diag}
+\DeclareMathOperator{\Op}{op}
 
 \newcommand{\code}[1]{\lstinline{#1}}
 
@@ -277,9 +278,95 @@ as desired.
 \clearpage
 \section{}
 \subsection{}
+First suppose that $d=n$.
+We have a system of linear inequalities
+\[
+  -\ones\leq Ax\leq \ones
+\]
+where the $i$-th row of $A\in \R^{m\times n}$ is $a_i$.
+By assumption,
+$A$ has full column rank so that $A$ is injective.
+We can therefore define a linear left inverse $B: A(\R^n)\to \R$ such that $BAx = x$.
+But then
+\[
+  \norm{x} = \norm{BAx}\leq \norm{B}_{\Op}\cdot \norm{Ax}
+\]
+for all $x\in \R^n$.
+In particular,
+$x\in P$ implies that $\norm{Ax}\leq \sqrt{n}$
+and consequently $\norm{x}\leq \norm{B}_{\Op}\sqrt n$.
+This shows that $P$ is indeed bounded.
+
+Now suppose that $d < n$.
+Then we can find some $0\neq b\in \R^n$ orthogonal to all the $a_i$'s.
+Clearly $\lambda b\in P$ for every $\lambda\in \R$
+since $\iprod{a_i, \lambda b} = 0\leq 1$ for all $i\in [m]$.
+However,
+$P$ cannot be bounded since $\norm{\lambda b} = \abs{\lambda}\cdot \norm{b}$
+can be made arbitrarily large.
+
 \subsection{}
+The gradient and Hessian are given by
+\begin{align*}
+  g_j(x)
+  &= \sum_{i=1}^m 2\frac{\iprod{a_i, x}}{1- \iprod{a_i, x}^2}a_i \\
+  H(x)
+  &= \sum_{i=1}^m 2\frac{1+\iprod{a_i, x}^2}{(1-\iprod{a_i, x}^2)^2} a_ia_i^T.
+\end{align*}
+
 \subsection{}
+$F(x)$ is finite if and only if for all $i$,
+\begin{align*}
+  1-\iprod{a_i, x}^2 > 0 \\
+  \abs{\iprod{a_i, x}} < 1.
+\end{align*}
+So $\dom F = \Int P$ is the interior of $P$.
+
+For every $x\in \dom f$,
+we observe that $H(x)$ is a non-negative linear combination of symmetric rank 1 matrices
+which are positive semidefinite.
+It follows that $H$ is positive semidefinite
+and so $F$ is convex.
+
 \subsection{}
+We know that the zeros of the gradient
+are precisely the global minimizers of $F$ as it is convex.
+We have $g(0) = 0$ so that 0 is a minimizer.
+
+Furthermore,
+for $x\in \dom F\setminus 0$,
+there is some $a_i$ such that $\iprod{a_i, x}\neq 0$.
+Since $F$ is a sum of non-negative functions
+and one of which takes positive value at $x$,
+$F(x) > 0$.
+
+It follows that 0 is the unique minimizer.
+
 \subsection{}
+We remark that $G(h) := h^TH(x) h$ is convex since its second derivative is $2H(x)\succeq 0$.
+Thus $\mcal E_x$ is a level-set of a convex function which is necesarily convex.
+Indeed, for all $h_1, h_2\in \mcal E_x, \lambda\in [0, 1]$,
+\begin{align*}
+  G[\lambda h_1 + (1-\lambda) h_2]
+  &\leq \lambda G(h_1) + (1-\lambda) G(h_2) \\
+  &\leq \lambda + (1-\lambda) \\
+  &= 1
+\end{align*}
+so that the line segment $[h_1, h_2]\sset \mcal E_x$ as desired.
+
+We claim that any $h\in \mcal E_x$ satisfies $\iprod{a_i, h}^2\leq 1$ for all $i\in [m]$.
+Suppose otherwise,
+there is some $\bar i$ such that the inequality is violated.
+We have
+\begin{align*}
+  h^TH(x)h
+  &= \sum_{i=1}^m 2\frac{1+\iprod{a_i, x}^2}{(1-\iprod{a_i, x}^2)^2} \iprod{a_i, h}^2 \\
+  &\geq 2\frac{1+\iprod{a_{\bar i}, x}^2}{(1-\iprod{a_{\bar i}, x}^2)^2} \\
+  &\geq 2.
+\end{align*}
+The last inequality follows from the observation that $\frac{1+z^2}{(1-z^2)^2}$ attains its minimum at $z=0$.
+But then $h\notin \mcal E_x$ which is a contradiction.
+By contradiction,
+$\mcal E_x\sset P$ for all $x\in \dom F$.
 
 \end{document}
