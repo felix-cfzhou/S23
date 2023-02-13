@@ -216,12 +216,13 @@ The gradient and Hessian are given by
   &= \Diag(1/x_1, \dots, 1/x_n).
 \end{align*}
 Here the logarithm is applied component-wise
-and the $\Diag: \R^n\to \R^{n\times n}$ maps a vector
-to the diagonal matrix whose non-zero entries are precisely given by the input vector.
+and $\Diag: \R^n\to \R^{n\times n}$ maps a vector
+to the diagonal matrix whose diagonal entries are precisely given by the input vector.
 
 \subsection{}
 By our work in class,
-$f$ is strictly convex if and only if $\grad^2 f\succ 0$.
+$f$ is strictly convex if and only if $\grad^2 f\succ 0$
+since $f$ is twice differentiable.
 Indeed,
 the eigenvalues of $\grad^2 f$ are given by
 \[
@@ -286,7 +287,7 @@ We have a system of linear inequalities
 where the $i$-th row of $A\in \R^{m\times n}$ is $a_i$.
 By assumption,
 $A$ has full column rank so that $A$ is injective.
-We can therefore define a linear left inverse $B: A(\R^n)\to \R$ such that $BAx = x$.
+We can therefore define a linear left inverse $B: A(\R^n)\to \R^n$ such that $BAx = x$.
 But then
 \[
   \norm{x} = \norm{BAx}\leq \norm{B}_{\Op}\cdot \norm{Ax}
@@ -336,9 +337,9 @@ We have $g(0) = 0$ so that 0 is a minimizer.
 Furthermore,
 for $x\in \dom F\setminus 0$,
 there is some $a_i$ such that $\iprod{a_i, x}\neq 0$.
-Since $F$ is a sum of non-negative functions
-and one of which takes positive value at $x$,
-$F(x) > 0$.
+Thus $g$ is a sum of non-negative functions
+and one of them takes positive value at $x$.
+So $g(x) > 0$ and $x$ is not a minimizer.
 
 It follows that 0 is the unique minimizer.
 
@@ -361,7 +362,7 @@ We have
 \begin{align*}
   h^TH(x)h
   &= \sum_{i=1}^m 2\frac{1+\iprod{a_i, x}^2}{(1-\iprod{a_i, x}^2)^2} \iprod{a_i, h}^2 \\
-  &\geq 2\frac{1+\iprod{a_{\bar i}, x}^2}{(1-\iprod{a_{\bar i}, x}^2)^2} \\
+  &> 2\frac{1+\iprod{a_{\bar i}, x}^2}{(1-\iprod{a_{\bar i}, x}^2)^2}\cdot 1 \\
   &\geq 2.
 \end{align*}
 The last inequality follows from the observation that $\frac{1+z^2}{(1-z^2)^2}$ attains its minimum at $z=0$.
