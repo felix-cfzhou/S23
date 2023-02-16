@@ -258,6 +258,7 @@
 \DeclareMathOperator{\OU}{OU}
 \DeclareMathOperator{\GWN}{GWN}
 \DeclareMathOperator{\Crit}{Crit}
+\DeclareMathOperator{\vol}{vol}
 
 % commonly used sets
 \newcommand{\R}{\mathbb{R}}
@@ -302,6 +303,7 @@
 \newcommand{\Gt}[1]{\stackrel{#1}{>}}
 \newcommand{\Lt}[1]{\stackrel{#1}{<}}
 \newcommand{\Add}[1]{\stackrel{#1}{+}}
+\newcommand{\Sim}[1]{\stackrel{#1}{\sim}}
 \newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
 
 \begin{document}
@@ -354,7 +356,7 @@ with a very specific covariance function.
   &= K(x_i-x_j).
 \end{align*}
 Here $K(\cdot)$ is a \emph{kernel} function (e.g. rbf kernel).
-This choice of covariance ensures that out Gaussian process is \emph{stationary},
+This choice of covariance ensures that our Gaussian process is \emph{stationary},
 i.e.
 \[
   (g(x))_{x\in \R^N} \eq{d} (g(x-x_0))_{x\in \R^N}.
@@ -384,14 +386,14 @@ We have
   &= \left[ \sum_{i=1}^N \cos(x_i-y_i) \right]^d \\
   &=: S(x, y)^d
 \end{align*}
-In particular,
-for $x=y$,
-we have $K(x, x) = N^d$,
-
-Note that this computation shows that $g(x)$ is indeed stationary.
 The second equality comes from staring at the terms in the expanded summation
 and realizing that if any indices are not precisely the same,
 then the expectation of the term is 0.
+
+Note that this computation shows that $g(x)$ is indeed stationary.
+In particular,
+for $x=y$,
+we have $K(x, x) = N^d$,
 
 In order to apply the Kac-Rice formula,
 we need to understand the joint distribution
@@ -430,6 +432,41 @@ Staring long enough yields the following identity.
   = \frac{\partial^{a+b} K}{\partial x_{i_1}\dots \partial x_{i_a} \partial y_{j_1}\dots \partial y_{j_b}} (x, y).
 \]
 
+Using the identity above,
+let us compute a few blocks of the big covariance matrix.
+
+We begin with $\Cov[g(x), g(x)]$.
+This corresponds to applying the identity with $a = b = 0$.
+we already know that
+\[
+  \E g(x)^2 = K(x, x) = N^d.
+\]
+
+Now,
+let us consider $\Cov[g(x), \grad g(x)]$.
+This corresponds to applying the identity with $a=0, b=1$.
+We have
+\begin{align*}
+  \E g(x) \frac{\partial g}{\partial x_j}
+  &= \eval{\frac{\partial K}{\partial y_j}(x, y)}_{x=y} \\
+  &= \eval{d S(x, y)^{d-1} \left[ -\sin(x_j-y_j) \right](-1)}_{x=y} \\
+  &= 0.
+\end{align*}
+
+Another example is the $\Cov[\grad g(x), \grad g(x)]$.
+We apply the identity with $a=1, b=1$
+and deduce that
+\begin{align*}
+  &\E \frac{\partial g}{\partial x_i}(x) \frac{\partial g}{\partial x_j}(x) \\
+  &= \eval{\frac{\partial^2 K}{\partial x_i \partial y_j}(x, y)}_{x=y} \\
+  &= \eval{d(d-1) S(x, y)^{d-2} \sin(x_j - y_j) \left[ -\sin(x_i-y_i) \right]\cdot \ones\set{i=j} d S(x, y)^{d-1} \cos(x_i-y_i)}_{x=y}.
+\end{align*}
+The extra term occurring when $i=j$
+corresponds to $\frac{\partial}{\partial x_i} \sin(x_j - y_j)$.
+
+Continuing with these computations
+eventually fills the blocks of our big covariance matrix
+as in \Cref{fig:filled matrix}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{fig/filled_matrix.jpeg}
@@ -437,6 +474,98 @@ Staring long enough yields the following identity.
   \label{fig:filled matrix}
 \end{figure}
 
+\begin{remark}
+  The following hold.
+  \begin{enumerate}
+    \item $\grad g(x), \grad^2 g(x)$ are independent.
+    \item The joint distribution of $(g(x), \grad g(x), \grad^2 g(x))$
+      is identical for all $x$.
+    \item The joint distribution of $\grad^2 f(x)$
+      is identical for all $x$.
+  \end{enumerate}
+\end{remark}
+
+Returning to the Kac-Rice formula,
+we have
+\[
+  \E\left[ \grad^2 f(x)\mid \grad f(x)=0 \right]
+  = \E\left[ \grad^2 f(x) \right]
+\]
+by independence,.
+Moreover,
+the Hessian does not depend on the value of $x$
+and we can pull this entire term out of the integral.
+It follows that there is some random matrix $H$ for which
+\begin{align*}
+  \E \Crit(f, A)
+  &= \E_H \left[ \abs{\det(H)} \right] \int_A p_{\mcal N(\alpha x, dN^{d-1} I_N)} (0, \dots, 0) dx \\
+  &= \E_H \left[ \abs{\det(H)} \right] \int_A p_{\mcal N(\alpha x, \sigma^2 I_N)} (0, \dots, 0) dx. &&\sigma^2 = dN^{d-1}
+\end{align*}
+Let us ignore the constant term and focus on the integral.
+\begin{align*}
+  &\int_A \left[ \det(2\pi \sigma^2 I) \right]^{-\frac12} \exp\left[ (\alpha x)^T (\sigma^2 I)^{-1} (\alpha x) / 2 \right] dx \\
+  &= \int_A \frac1{\alpha^N} \left[ \det(2\pi \sigma^2/\alpha^2 I) \right]^{-\frac12} \exp\left[ (\alpha x)^T (\sigma^2/\alpha^2 I)^{-1} (\alpha x) / 2 \right] dx \\
+  &= \frac1{\alpha^N} \P\set{g\in A} &&g\sim \mcal N(0, \sigma^2/\alpha^2 I) \\
+  &= \frac1{\alpha^N} \P\set*{\frac1\alpha g\in A} &&g\sim \mcal N(0, \sigma^2 I) \\
+  &= \frac1{\alpha^N} \P\set{g\in \alpha A}. &&g\sim \mcal N(0, \sigma^2 I).
+\end{align*}
+
+As $\alpha \to 0$,
+we have
+\[
+  \frac1{\alpha^N} \vol(\alpha A)
+  = \frac1{\alpha^N} \alpha^N \vol(A)
+  = \vol(A).
+\]
+As $\alpha\to \infty$,
+since probability measures are normalized,
+\[
+  \frac1{\alpha^N} \vol(\alpha A)
+  \to 0.
+\]
+This agrees with out intuition that the number of critical points should tend to 0
+as we increase the parameter $\alpha$.
+Furthermore,
+at $\alpha=0$,
+the number of critical points is completely determined by the Gaussian volume of $A$,
+which again agrees with out intuition.
+
 \section{An Explicit Random Matrix Model}
+It remains to explicitly construct a random matrix $H$
+which has the desired covariance structure.
+We claim that it suffices to take
+\[
+  H
+  = \alpha I_n
+  + \sqrt{d(d-1) N^{d-2}} h I_N
+  + \sqrt{d(d-1) N^{d-1}} W
+  + \sqrt{dN^{d-1}} D.
+\]
+Here $h\sim \mcal N(0, 1)$ independently of $W, D$
+and $D, W$ are diagonal, symmetric matrices, respectively,
+satisfying
+\begin{align*}
+  D_{ii} &\Sim{iid} \mcal N(0, 1) \\
+  W_{ji} = W_{ij} &\Sim{iid} \mcal N(0, 1/N) &&i < j \\
+  W_{ii} &\Sim{iid} \mcal N(0, 2/N).
+\end{align*}
+Thus $W$ is drawn from the so called \emph{Gaussian Orthogonal Ensemble}.
+
+As a sanity check,
+we have
+\begin{align*}
+  \Var[H_{ii}]
+  &= d(d-1) N^{d-2} + d(d-1) N^{d-1} \frac2N \\
+  &= dN^{d-1} + 3d(d-1) N^{d-2} \\
+  \Cov[H_{ii}, H_{jj}]
+  &= d(d-1) N^{d-2}
+\end{align*}
+as desired.
+
+In order to determine the value of the determinant term
+we wrote above,
+we need to determine the product of the spectrum of $H$.
+In particular,
+we would like to understand the eigenvalues of $W + D$.
 
 \end{document}
