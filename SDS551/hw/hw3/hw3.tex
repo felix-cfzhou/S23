@@ -1,0 +1,359 @@
+\documentclass[10pt]{article} 
+
+\usepackage{fullpage}
+\usepackage{bookmark}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{physics}
+% \usepackage{unicode-math}
+\usepackage{dsfont}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage[noabbrev, nameinlink]{cleveref}
+\usepackage[most]{tcolorbox}
+\usepackage{empheq}
+\usepackage[amsmath,standard,thmmarks]{ntheorem} 
+\usepackage{bm}
+\usepackage{tabularray}
+\usepackage{pdfpages}
+\usepackage{float}
+
+\setlist[enumerate]{topsep=1pt,itemsep=0pt,partopsep=1ex,parsep=1ex}
+
+% floor, ceiling, set
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\set}{\lbrace}{\rbrace}
+\DeclarePairedDelimiter{\iprod}{\langle}{\rangle}
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+\let\abs\relax
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\let\norm\relax
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\bdy}{bdy}
+\DeclareMathOperator{\Lim}{Lim}
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\dual}{dual}
+\DeclareMathOperator{\opt}{opt}
+\DeclareMathOperator{\cone}{cone}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\NB}{NB}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\indeg}{indeg}
+\DeclareMathOperator{\outdeg}{outdeg}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\odd}{odd}
+\DeclareMathOperator{\OPT}{OPT}
+\DeclareMathOperator{\aff}{aff}
+\DeclareMathOperator{\ri}{ri}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Fix}{Fix}
+\DeclareMathOperator{\Prox}{Prox}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\zer}{zer}
+\DeclareMathOperator{\fl}{fl}
+\DeclareMathOperator{\mach}{mach}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Softmax}{Softmax}
+\DeclareMathOperator{\Po}{Po}
+\DeclareMathOperator{\Be}{Be}
+\DeclareMathOperator{\Cov}{Cov}
+
+\newcommand{\code}[1]{\lstinline{#1}}
+
+\newcommand{\ones}{\mathds{1}}
+
+\newcommand{\up}{\uparrow}
+\newcommand{\down}{\downarrow}
+\newcommand{\tends}[1]{\xrightarrow{#1}}
+\newcommand{\eq}[1]{\stackrel{#1}{=}}
+\newcommand{\Geq}[1]{\stackrel{#1}{\geq}}
+\newcommand{\Leq}[1]{\stackrel{#1}{\leq}}
+
+% commonly used sets
+\newcommand{\m}{\mathds{m}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+\renewcommand{\S}{\mathcal{S}}
+
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\w}{\mathbf{w}}
+\renewcommand{\c}{\mathbf{c}}
+\renewcommand{\d}{\mathbf{d}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\f}{\mathbf{f}}
+
+\newcommand{\h}{\vec{h}}
+\newcommand{\p}{\vec{p}}
+\renewcommand{\a}{\vec{a}}
+\renewcommand{\b}{\vec{b}}
+\renewcommand{\t}{\vec{t}}
+\renewcommand{\u}{\vec{u}}
+\renewcommand{\v}[1]{\vec{#1}}
+
+\newcommand{\sset}{\subseteq}
+\newcommand{\mcal}{\mathcal}
+\newcommand{\mscr}{\mathscr}
+\newcommand{\mbf}{\mathbf}
+\newcommand{\mat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\eff}{\text{eff}}
+
+\newcommand{\NP}{\ensuremath{\mathcal{NP}}}
+
+\newtcbtheorem[
+  number within=section,
+  crefname={lemma}{Lemma}
+]
+{lem}
+{Lemma}%
+{
+  theorem style=break,
+  sharp corners=all,
+  colframe=Red,
+  colback={White!95!Red},
+  coltitle=black,
+  fonttitle=\bfseries,
+  beforeafter skip=12pt
+}{lem}
+
+\newtcbtheorem[no counter]{pf}{Proof}%
+{
+  breakable,
+  blanker,
+  left=5.5mm,
+  borderline west={2pt}{0pt}{NavyBlue!80!white},
+  after upper=\null\nobreak\hfill\ensuremath{\square},
+  colback=white,
+  colframe=white,
+  coltitle=black,
+  fonttitle=\it,
+  parbox=false,
+  after skip=12pt
+}{pf}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+    frame=tb,
+    language=Python,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=none,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=3
+}
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{8pt}
+
+\setcounter{secnumdepth}{2}
+\renewcommand\thesection{Problem \arabic{section}.}
+\renewcommand\thesubsection{(\alph{subsection})}
+
+
+\begin{document}
+
+\begin{center}
+    {\Large\textbf{Yale University}}\\
+    \vspace{3mm}
+    {\Large\textbf{S\&DS 551, Spring 2023}}\\
+    \vspace{2mm}
+    {\Large\textbf{Homework 2}}\\
+    \vspace{3mm}
+    \textbf{Chang Feng (Felix) Zhou cz397}
+\end{center}
+
+\section{}
+\subsection{}
+Our goal is to determine
+\[
+  \P\set{\abs{Q_{n+1}} = j\mid \abs{Q_n}=i_n, \dots, \abs{Q_1}=i_1}
+\]
+and show that it only depends on $Q_n$.
+We assume that the trajectory has non-zero probability,
+so that $j\in \set{i_n\pm 1}$ and $i_k\in \set{i_{k-1}\pm 1}$.
+
+Firstly,
+we notice that if there is some $k\in [n]$ such that $i_k = 0$,
+we may as well as consider
+\[
+  \P\set{\abs{Q_{n+1}} = j\mid \abs{Q_n}=i_n, \dots, \abs{Q_{k+1}}=i_{k+1}}.
+\]
+This is because $\abs{Q_k} = 0 \iff Q_k = 0$.
+In other words,
+the trajectory of $\abs{Q_n}$ past $k$ depends only on $Q_n$,
+which depends only on $Q_{n-1}, \dots, Q_k$
+and $Q_k$ is fixed if we condition on $\abs{Q_k} = 0$.
+Thus without loss of generality,
+we may assume that $i_k > 0$ for all $k\in [n]$.
+
+\underline{Case I: $j = 0$}
+In this case,
+we must have $\abs{Q_n} = 1$
+and $Q_n\in \set{\pm 1}$.
+In either of the two cases,
+the desired probability is $\frac12$.
+
+\underline{Case II: $j > 0$}
+Since we assume that $i_k > 0$ for all $k \in [n]$,
+there are exactly two trajectories for which $\abs{Q_n} = i_n, \dots, \abs{Q_1} = i_1$.
+either $Q_1, \dots, Q_n > 0$ or $Q_1, \dots, Q_n < 0$.
+
+Regardless of the two cases,
+the probability of moving from $Q_n = \pm i_n$ to $Q_{n+1} = \pm j$
+is exactly $\frac12$ by symmetry.
+
+All in all,
+$\set{\abs{Q_n}}$ is Markov with transition probabilities
+\begin{align*}
+  P_{0,1} &= 1 \\
+  P_{i,i+1} &= \frac12 &&i\neq 0 \\
+  P_{i, i-1} &= \frac12 &&i\neq 0
+\end{align*}
+
+\subsection{}
+Consider $M_{n+1}$.
+
+\underline{Case I: $M_n = 0$}
+If $M_n = 0$,
+then $\max_k Q_k = Q_n$ and either the maximum increases with probability $\frac12$,
+in which case $M_{n+1} = 0$ again,
+or $Q_{n+1} = Q_n - 1$ with probability $\frac12$,
+in which case $M_{n+1} = 1$.
+
+\underline{Case II: $M_n > 0$}
+If $M_n > 0$,
+then $Q_n < \max_k Q_k$ so that $Q_{n+1}\leq M_n$.
+It follows that the maximum remains the same.
+So $M_{n+1} = M_n \pm 1$,
+each with probability $\frac12$.
+
+All in all,
+$\set{M_n}$ is indeed a Markov chain
+with transition probabilities
+\begin{align*}
+  P_{0, 0} &= \frac12 \\
+  P_{0, 1} &= \frac12 \\
+  P_{i, i+1} &= \frac12 &&i > 0 \\
+  P_{i, i-1} &= \frac12. &&i > 0
+\end{align*}
+
+\clearpage
+\section{}
+We claim this is false.
+Take $Q_n$ to be a simple random walk
+and $P_n := \max_{0\leq k\leq n} Q_k - Q_n$.
+We already know that $P_n, Q_n$ are Markov.
+
+Now,
+\[
+  X_n := P_n + Q_n = \max_{0\leq k\leq n} Q_k
+\]
+cannot be Markov.
+To see this,
+we have
+\begin{align*}
+  \P\set{X_4 = 2\mid X_0 = 0, X_1 = 1, X_2 = 1, X_3 = 1} &= \frac14 \\
+  \P\set{X_4 = 2\mid X_0 = 0, X_1 = 1, X_2 = 2, X_3 = 1} &= 1.
+\end{align*}
+The first conditional probability occurs with the $Q_n$ trajectory $0, 1, 0, 1$
+or $0, 1, 0, -1$,
+where only the first trajectory has any chance to arrive at $X_4=2$.
+The second conditional probability occurs with the $Q_n$ trajectory $0, 1, 2, 1$.
+
+\clearpage
+\section{}
+We argue by induction.
+The base $n=1$ holds by assumption.
+Suppose inductively that $P^n$ is stochastic (double stochastic, sub-stochastic)
+and consider $P^{n+1}$.
+
+\underline{Stochastic}
+We have
+\begin{align*}
+  \sum_j P_{ij}^{n+1}
+  &= \sum_j \sum_k P_{ik}\cdot P_{kj}^n \\
+  &= \sum_k P_{ik} \sum_j P_{kj}^n \\
+  &= \sum_k P_{ik}\cdot 1 \\
+  &= 1.
+\end{align*}
+The third inequality holds by the induction hypothesis
+and the last inequality holds by assumption.
+
+\underline{Double Stochastic}
+We have already shown that that the rows sum to 1.
+It suffices to show that the columns sum to 1.
+But we can reduce this to the row case.
+Indeed,
+\begin{align*}
+  \sum_i P_{ij}^{n+1}
+  &= \sum_i (P_{ji}^{n+1})^T \\
+  &= \sum_i (P_{ji}^T)^{n+1} \\
+  &= 1.
+\end{align*}
+Here we used the fact that $P^T$ is stochastic
+and so its powers are also stochastic
+as proven above.
+
+\underline{Sub-stochastic}
+Similarly,
+we have
+\begin{align*}
+  \sum_j P_{ij}^{n+1}
+  &= \sum_j \sum_k P_{ik}\cdot P_{kj}^n \\
+  &= \sum_k P_{ik} \sum_j P_{kj}^n \\
+  &\leq \sum_k P_{ik}\cdot 1 \\
+  &\leq 1.
+\end{align*}
+The first inequality holds by the induction hypothesis
+and the last inequality by assumption.
+
+By induction,
+we conclude the proofs.
+
+\clearpage
+\section{}
+\section{}
+
+\end{document}
