@@ -243,7 +243,7 @@ this is at most the bit complexity of $A$.
 Suppose $C\in \Q^{p\times p}$.
 Write
 \[
-  D := M C\in \Z_{p\times p}.
+  D := M C\in \Z^{p\times p}.
 \]
 
 The matrix norm is obtained by some unit-vector $x\in \R^p$.
@@ -259,7 +259,7 @@ Thus
   &= \frac1M \sum_{i=1}^p \sum_{j=1}^p \abs{D_{ij}}.
 \end{align*}
 
-The bit complexity of $D^{ij}$ is at most $L$.
+The bit complexity of $D_{ij}$ is at most $L$.
 Hence the value of the summation is at most $n^2 2^L$.
 Thus the operator norm is at most
 \[
@@ -267,19 +267,31 @@ Thus the operator norm is at most
 \]
 as desired.
 
-Similarly,
-the inverse of the matrix norm is equivalent to
+On the other hand,
 \[
-  \min_{\norm{x}=1} \norm{Cx}.
+  \norm{C^{-1}}
+  = \frac{M}{\abs{\det D}} \norm{\adj(D)}.
 \]
-Again,
-our analysis above holds since $x$ was arbitrary.
-Thus the largest value the operator norm of the inverse can take is
-\[
-  2^{O(L \log n)}.
-\]
+The equality follows by Cramer's rule.
 
-This concludes the proof.
+By cofactor expansion,
+$\det D\in \Z$,
+thus we may as well ignore it.
+$M$ has bit complexity at most $L$
+and hence contributes at most a multiplicative $2^L$ factor to the matrix norm.
+
+Now,
+the entries of the adjugate matrix are determinants of submatrices of $D$.
+In particular,
+it is the product of singular values and is thus at most the largest singular value of $D$ to the $n$-th power.
+But the largest singular value is simply the operator norm of $D$,
+which is at most the sum of absolute values of entries in $D$ from our work above.
+Each entry of $D$ has bit complexity at most $L$.
+Thus the largest singular value is at most $n^22^L$.
+Taking this to the power of $n$ and accounting for $M$ yields the bound
+\[
+  2^{O\left( nL \log n \right)}.
+\]
 
 \subsection{}
 Let $x$ be a vertex of $K$
@@ -287,15 +299,34 @@ and recall that it is uniquely determined by some invertible submatrix $C$ of $A
 so that $Cx = b^=$
 where $b^=$ is some subvector of $b$.
 
-We know that
+Write $b^= = b' / B$ where $B$ is the product of denominators in $b^=$.
+Using the notation from P.1.(b),
+we have
 \[
   x
   = C^{-1} b^=
-  = \frac1{\det C} \adj(C) b^=
+  = \frac{M}{B \det C} \adj(C) b'.
 \]
-where $\adj C$ is the adjugate matrix of $C$.
 But since all intermediaries are rational,
 $x$ must be rational as well.
+
+We showed in P.1.(b) (indirectly) that the bit complexity of $M \adj C$ is $O(nL \log n)$.
+Now,
+\begin{align*}
+  (M\adj (C) b')_i
+  &= M \sum_j \adj(C)_{ij} b_j' \\
+  &\leq M2^L \sum_j \adj(C)_{ij}.
+\end{align*}
+The inequality comes from the fact that $b_j'$ has bit complexity at most $L$.
+It follows that $M\adj (C)b'$ has bit complexity at most $O(nL \log n)$
+since $M\adj C$ has bit complexity $O(nL\log n)$.
+
+The bit complexity of $B, \det C$ are all at most $O(nL\log n)$.
+Hence $x$ has bit complexity at most
+\[
+  O(nL\log n)
+\]
+as desired.
 
 \clearpage
 \section{}
@@ -396,8 +427,8 @@ while $P$ is the convex hull of all indicator vectors.
   Finally,
   suppose every column of $B$ has exactly two non-zero entries.
   But since we assumed that $A$ has the particular format,
-  if we subtract the row of $B$ corresponding to $U$
-  and the rows of $B$ corresponding to $W$,
+  if we subtract the rows of $B$ corresponding to $U$
+  from the rows of $B$ corresponding to $W$,
   we get the zero vector and thus $B$ is singular.
 
   By induction,
@@ -453,22 +484,31 @@ the second term in $\grad^2 f(x)$ is non-positive.
 \end{lem}
 
 \begin{pf}{\Cref{lem:convex smooth}}{}
-  By Taylor's theorem,
+  Recall we know that $\grad^2 f\succeq 0$ from the convexity of $f$.
+  The described condition is equal to the condition that the Rayleigh quotient is at most $L$.
+  This is equivalent to the largest eigenvalue being at most $L$.
+  Finally,
+  this is equivalent to the condition that the operator norm of $\grad^2 f$ is always at most $L$,
+
+  Define $g(t) := \grad f([1-\lambda]x + \lambda y)$
+  and remark that $g'(t) = \grad^2 f([1-\lambda]x + \lambda y) [y-x]$.
+  We can thus leverage the integral representation of $g$.
   \begin{align*}
-    f(y) - f(x) &= \grad f(x)^T(y-x) + \frac12 (y-x)^T \grad^2 f(\xi)(y-x) &&\xi\in [x, y] \\
-    f(y) - f(x) &= \grad f(y)^T(x-y) + \frac12 (x-y)^T \grad^2 f(\eta)(x-y) &&\eta\in [x, y] \\
-    [\grad f(x) - \grad f(y)]^T(y-x)
-    &= -\frac12 (y-x)^T \grad^2 f(\xi)(y-x) - \frac12 (x-y)^T \grad^2 f(\eta) (x-y) \\
-    &\geq -L \norm{x-y}^2. &&\text{assumption}
+    \norm{\grad f(y) - \grad f(x)}
+    &= \norm{g(1) - g(0)} \\
+    &= \norm*{\int_0^1 g'(t) dt} \\
+    &\leq \int_0^1 \norm{g'(t)} dt \\
+    &= \int_0^1 \norm{\grad^2 f([1-\lambda]x + \lambda y) [y-x]} dt \\
+    &\leq \int_0^1 L\norm{y-x} dt \\
+    &= L\norm{y-x}.
   \end{align*}
-  Now, the LHS is at most $\norm{\grad f(x) - \grad f(y)}\cdot \norm{x-y}$.
-  Dividing by $-\norm{x-y}$ yields the proof.
 \end{pf}
 
 By the lemma,
 is suffices to bound $y^T \grad^2 f(x) y$.
 \begin{align*}
   \sum_{i, j} y_iy_j \grad_{i, j}^2 f(x)
+  &= \sum_{i, j} y_i y_j \sum_{S\ni i, j} \frac{\exp\iprod{x, \ones_S}}{\sum_T \exp\iprod{x, \ones_T}} - y^T\grad f(x)\grad f(x)^T y \\
   &\leq \sum_{i, j} y_i y_j \sum_{S\ni i, j} \frac{\exp\iprod{x, \ones_S}}{\sum_T \exp\iprod{x, \ones_T}} \\
   &\leq \sum_{i, j} y_i y_j\cdot 1 \\
   &\leq n^2 \norm{y}_\infty^2 \\
