@@ -76,6 +76,7 @@
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Diag}{Diag}
 \DeclareMathOperator{\Op}{op}
+\DeclareMathOperator{\adj}{adj}
 
 \newcommand{\code}[1]{\lstinline{#1}}
 
@@ -135,7 +136,7 @@
 \newcommand{\NP}{\ensuremath{\mathcal{NP}}}
 
 \newtcbtheorem[
-  number within=section,
+  auto counter,
   crefname={lemma}{Lemma}
 ]
 {lem}
@@ -208,14 +209,273 @@
 
 \section{}
 \subsection{}
-\subsection{}
-\subsection{}
+For the $(i, j)$-th entry of $A$,
+let us write it as
+\[
+  A_{ij} = \frac{a_{ij}}{b_{ij}}
+\]
+for some coprime $a_{ij}\in \Z, b_{ij}\in \Z_+$.
+Then consider
+\begin{align*}
+  M &:= \prod_{i, j} b_{ij}\in \Z \\
+  B &:= MA.
+\end{align*}
 
+By construction,
+$A = \frac1M B$
+and since $b_{ij}\mid M$ for all $i, j$,
+we know that $A\in \Z^{m\times n}$.
+The bit complexity of $M$ is
+\begin{align*}
+  O\left( \log \prod_{i, j} b_{ij} \right)
+  &= O\left( \sum_{i, j} \log b_{ij} \right).
+\end{align*}
+This is at most the bit complexity of $A$.
+The bit complexity of any $B_{ij}$ is at most
+\begin{align*}
+  O\left( \log a_{ij} \prod_{k, \ell} b_{k, \ell} \right)
+  &= O\left( \log a_{ij} + \sum_{k, \ell} \log b_{k, \ell} \right).
+\end{align*}
+Once again,
+this is at most the bit complexity of $A$.
+
+\subsection{}
+Suppose $C\in \Q^{p\times p}$.
+Write
+\[
+  D := M C\in \Z_{p\times p}.
+\]
+
+The matrix norm is obtained by some unit-vector $x\in \R^p$.
+Thus
+\begin{align*}
+  \norm{C}_2
+  &= \norm{Cx} \\
+  &= \sqrt{\sum_{i=1}^p (Cx)_i^2} \\
+  &\leq \sum_{i=1}^p \abs{(Cx)_i} &&\sqrt{a+b}\leq \sqrt a + \sqrt b \\
+  &\leq \sum_{i=1}^p \norm{C^{(i)}}\cdot \norm{x} &&\text{$C^{(i)}$ $i$-th row} \\
+  &= \sum_{i=1}^p \norm{C^{(i)}} \\
+  &\leq \sum_{i=1}^p \sum_{j=1}^p \abs{C_{ij}} \\
+  &= \frac1M \sum_{i=1}^p \sum_{j=1}^p \abs{D_{ij}}.
+\end{align*}
+
+The bit complexity of $D^{ij}$ is at most $L$.
+Hence the value of the summation is at most $n^2 2^L$.
+Thus the operator norm is at most
+\[
+  2^{O\left( L\log n \right)}
+\]
+as desired.
+
+Similarly,
+the inverse of the matrix norm is equivalent to
+\[
+  \min_{\norm{x}=1} \norm{Cx}.
+\]
+Again,
+our analysis above holds since $x$ was arbitrary.
+Thus the largest value the operator norm of the inverse can take is
+\[
+  2^{O(L \log n)}.
+\]
+
+This concludes the proof.
+
+\subsection{}
+Let $x$ be a vertex of $K$
+and recall that it is uniquely determined by some invertible submatrix $C$ of $A$
+so that $Cx = b^=$
+where $b^=$ is some subvector of $b$.
+
+We know that
+\[
+  x
+  = C^{-1} b^=
+  = \frac1{\det C} \adj(C) b^=
+\]
+where $\adj C$ is the adjugate matrix of $C$.
+But since all intermediaries are rational,
+$x$ must be rational as well.
+
+\clearpage
 \section{}
 \subsection{}
-\subsection{}
-\subsection{}
+\begin{lem}{}{convex composition}
+  If $f: J\sset \R\to \R, g: K\sset \R^m\to J$ are convex and $f$ is non-decreasing,
+  then $f\circ g$ is convex.
+\end{lem}
 
+\begin{pf}{\Cref{lem:convex composition}}{}
+  Fix $\lambda\in [0, 1]$ and $x, y\in K$.
+  \begin{align*}
+    f(g[(1-\lambda)x + \lambda y])
+    &\leq f([1-\lambda]g(x) + \lambda g(y)) &&\text{$f$ non-decreasing, $g$ convex} \\
+    &\leq (1-\lambda) f(g(x)) + \lambda f(g(y)). &&\text{$f$ convex}
+  \end{align*}
+\end{pf}
+
+Consider the function $\iprod{x, \ones_M}$.
+It is a linear function and is thus convex.
+Now,
+the exponential is convex and non-decreasing,
+so $\exp(\iprod{x, \ones_M})$ is convex.
+Moreover,
+the sum of convex function is convex.
+So $\sum_M \exp(\iprod{x, \ones_M})$ is convex.
+Finally,
+$\ln$ is non-decreasing and thus
+\[
+  f(x) = \ln \sum_M \exp(\iprod{x, \ones_M})
+\]
+is convex as desired.
+
+\subsection{}
+Let us assume that $G$ has bipartition $V=(U, W)$
+where $\card U = \card W = n/2$,
+or else $P = \varnothing$ and the problem is trivial.
+
+We claim that $P$ is equivalent to the following polytope $Q$
+\begin{align*}
+  \sum_{v\sim u} x_{uv} &= 1 &&\forall u\in V \\
+  x &\geq 0.
+\end{align*}
+If we let $A$ be the vertex-edge incident matrix of $G$,
+then we can succinctly write this as
+\begin{align*}
+  Ax &= \ones \\
+  x &\geq 0.
+\end{align*}
+Note that for $x\in \set{0, 1}^m$,
+$x\in Q$ if and only if $x = \ones_M$ for some perfect matching $M$.
+
+If we show $P=Q$ then we are done,
+since we can just check in polynomial time whether any of the constraints are violated.
+
+To see the claim,
+first note that $P\sset Q$.
+This is because any indicator vector for a matching $\ones_M$
+necessarily satisfies all the inequalities.
+But then all the convex combinations of indicator variables
+also satisfies the inequalities as well since the inequalities are linear.
+
+It remains to show that $Q\sset P$.
+We argue that the extreme points of $Q$ are integral,
+ie the extreme points of $Q$ are indicator vectors of perfect matchings.
+This would complete the proof
+since $Q$ is then the convex hull of some indicator vectors
+while $P$ is the convex hull of all indicator vectors.
+
+\begin{lem}{}{TU}
+  $A$ is totally unimodular,
+  ie every square submatrix of $A$ has determinant taking values in $\set{-1, 0, 1}$.
+\end{lem}
+
+\begin{pf}{\Cref{lem:TU}}{}
+  Without loss of generality,
+  assume that $G$ has bipartition $V = (U, W)$
+  and the rows of $A$ are such that the first $n/2$ correspond to $U$
+  and the last $n/2$ correspond to $W$.
+
+  Let $B\in \set{-1, 0, 1}^{k\times k}$ be a square submatrix of $A$.
+  We argue by induction on $k$.
+
+  The base case of $k=1$ certainly holds.
+
+  Suppose inductively that this holds up to $k-1$.
+  If $B$ has any zero columns,
+  then $\det(B)$ is zero and we are done.
+  Otherwise,
+  if $B$ has any columns with a single non-zero entry 1,
+  we can use cofactor expansion along that column to determine that
+  \[
+    \det(B) = \pm \det(B')
+  \]
+  where $B'$ is a $(k-1)\times (k-1)$ submatrix of $A$.
+  In this case,
+  we are also done.
+  Finally,
+  suppose every column of $B$ has exactly two non-zero entries.
+  But since we assumed that $A$ has the particular format,
+  if we subtract the row of $B$ corresponding to $U$
+  and the rows of $B$ corresponding to $W$,
+  we get the zero vector and thus $B$ is singular.
+
+  By induction,
+  we conclude the proof.
+\end{pf}
+
+To see why the lemma completes the proof,
+note that any extreme point $x$ of $Q$ is determined by some invertible square submatrix $A_=$
+where the non-zero entries of $x$ are given by
+\[
+  x_=
+  = A_=^{-1} \ones_=
+  = \frac1{\det(A_=)} \adj(A_=) \ones_=.
+\]
+But $\frac1{\det(A_=)}\in \set{\pm 1}$ and $\adj(A_=)$ is also integral,
+Hence $x_=$ must be integral as well.
+
+\subsection{}
+Suppose we can evaluate $f(\ones)$ in polynomial time.
+Then
+\begin{align*}
+  \exp f(\ones)
+  &= \sum_{M\in \mcal M} \exp(\iprod{\ones, \ones_M}) \\
+  &= \sum_{M\in \mcal M} \exp(n/2) \\
+  &= \card{\mcal M} \exp(n/2) \\
+  \card{\mcal M}
+  &= \frac{\exp f(\ones)}{\exp(n/2)}.
+\end{align*}
+Thus we can count the number of perfect matching within $G$ in polynomial time.
+
+\clearpage
 \section{}
+By computation,
+\begin{align*}
+  \grad f(x)
+  &= \sum_S \frac{\exp\iprod{x, \ones_S}}{\sum_T \exp\iprod{x, \ones_T}} \ones_S \\
+  \grad_i f(x)
+  &= \sum_{S\ni i} \frac{\exp\iprod{x, \ones_S}}{\sum_T \exp\iprod{x, \ones_T}} \\
+  \frac{\partial \grad_i f(x)}{\partial x_j}
+  &= \sum_{S\ni i, j} \frac{\exp\iprod{x, \ones_S}}{\sum_T \exp\iprod{x, \ones_T}} - \grad_i f(x)\grad_j f(x).
+\end{align*}
+Note that when we take a quadratic form,
+the second term in $\grad^2 f(x)$ is non-positive.
+
+\begin{lem}{}{convex smooth}
+  If $f$ is convex,
+  then $\grad f$ is $L$-Lipschitz
+  if
+  \[
+    y^T\grad^2 f(x)y \leq L\norm{y}^2
+  \]
+  for all $y\in \R^n$.
+\end{lem}
+
+\begin{pf}{\Cref{lem:convex smooth}}{}
+  By Taylor's theorem,
+  \begin{align*}
+    f(y) - f(x) &= \grad f(x)^T(y-x) + \frac12 (y-x)^T \grad^2 f(\xi)(y-x) &&\xi\in [x, y] \\
+    f(y) - f(x) &= \grad f(y)^T(x-y) + \frac12 (x-y)^T \grad^2 f(\eta)(x-y) &&\eta\in [x, y] \\
+    [\grad f(x) - \grad f(y)]^T(y-x)
+    &= -\frac12 (y-x)^T \grad^2 f(\xi)(y-x) - \frac12 (x-y)^T \grad^2 f(\eta) (x-y) \\
+    &\geq -L \norm{x-y}^2. &&\text{assumption}
+  \end{align*}
+  Now, the LHS is at most $\norm{\grad f(x) - \grad f(y)}\cdot \norm{x-y}$.
+  Dividing by $-\norm{x-y}$ yields the proof.
+\end{pf}
+
+By the lemma,
+is suffices to bound $y^T \grad^2 f(x) y$.
+\begin{align*}
+  \sum_{i, j} y_iy_j \grad_{i, j}^2 f(x)
+  &\leq \sum_{i, j} y_i y_j \sum_{S\ni i, j} \frac{\exp\iprod{x, \ones_S}}{\sum_T \exp\iprod{x, \ones_T}} \\
+  &\leq \sum_{i, j} y_i y_j\cdot 1 \\
+  &\leq n^2 \norm{y}_\infty^2 \\
+  &\leq n^2 \norm{y}_2^2.
+\end{align*}
+
+By the lemma,
+$\grad f$ is $n^2$-Lipschitz as desired.
 
 \end{document}
