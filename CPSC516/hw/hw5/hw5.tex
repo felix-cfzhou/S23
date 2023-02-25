@@ -1,0 +1,368 @@
+\documentclass[10pt]{article} 
+
+\usepackage{fullpage}
+\usepackage{bookmark}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{physics}
+% \usepackage{unicode-math}
+\usepackage{dsfont}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage[noabbrev, nameinlink]{cleveref}
+\usepackage[most]{tcolorbox}
+\usepackage{empheq}
+\usepackage[amsmath,standard,thmmarks]{ntheorem} 
+\usepackage{bm}
+\usepackage{tabularray}
+\usepackage{pdfpages}
+\usepackage{float}
+
+\setlist[enumerate]{topsep=1pt,itemsep=0pt,partopsep=1ex,parsep=1ex}
+
+% floor, ceiling, set
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\set}{\lbrace}{\rbrace}
+\DeclarePairedDelimiter{\iprod}{\langle}{\rangle}
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+\let\abs\relax
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\let\norm\relax
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\bdy}{bdy}
+\DeclareMathOperator{\Lim}{Lim}
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\dual}{dual}
+\DeclareMathOperator{\opt}{opt}
+\DeclareMathOperator{\cone}{cone}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\NB}{NB}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\indeg}{indeg}
+\DeclareMathOperator{\outdeg}{outdeg}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\odd}{odd}
+\DeclareMathOperator{\OPT}{OPT}
+\DeclareMathOperator{\aff}{aff}
+\DeclareMathOperator{\ri}{ri}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Fix}{Fix}
+\DeclareMathOperator{\Prox}{Prox}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\zer}{zer}
+\DeclareMathOperator{\fl}{fl}
+\DeclareMathOperator{\mach}{mach}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Softmax}{Softmax}
+\DeclareMathOperator{\Po}{Po}
+\DeclareMathOperator{\Be}{Be}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Diag}{Diag}
+\DeclareMathOperator{\Op}{op}
+\DeclareMathOperator{\adj}{adj}
+
+\newcommand{\code}[1]{\lstinline{#1}}
+
+\newcommand{\ones}{\mathds{1}}
+
+\newcommand{\up}{\uparrow}
+\newcommand{\down}{\downarrow}
+\newcommand{\tends}[1]{\xrightarrow{#1}}
+\newcommand{\eq}[1]{\stackrel{#1}{=}}
+\newcommand{\Geq}[1]{\stackrel{#1}{\geq}}
+\newcommand{\Leq}[1]{\stackrel{#1}{\leq}}
+
+% commonly used sets
+\newcommand{\m}{\mathds{m}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+\renewcommand{\S}{\mathcal{S}}
+
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\w}{\mathbf{w}}
+\renewcommand{\c}{\mathbf{c}}
+\renewcommand{\d}{\mathbf{d}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\f}{\mathbf{f}}
+
+\newcommand{\h}{\vec{h}}
+\newcommand{\p}{\vec{p}}
+\renewcommand{\a}{\vec{a}}
+\renewcommand{\b}{\vec{b}}
+\renewcommand{\t}{\vec{t}}
+\renewcommand{\u}{\vec{u}}
+\renewcommand{\v}[1]{\vec{#1}}
+
+\newcommand{\sset}{\subseteq}
+\newcommand{\mcal}{\mathcal}
+\newcommand{\mscr}{\mathscr}
+\newcommand{\mbf}{\mathbf}
+\newcommand{\mat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\eff}{\text{eff}}
+
+\newcommand{\NP}{\ensuremath{\mathcal{NP}}}
+
+\newtcbtheorem[
+  auto counter,
+  crefname={lemma}{Lemma}
+]
+{lem}
+{Lemma}%
+{
+  theorem style=break,
+  sharp corners=all,
+  colframe=Red,
+  colback={White!95!Red},
+  coltitle=black,
+  fonttitle=\bfseries,
+  beforeafter skip=12pt
+}{lem}
+
+\newtcbtheorem[no counter]{pf}{Proof}%
+{
+  breakable,
+  blanker,
+  left=5.5mm,
+  borderline west={2pt}{0pt}{NavyBlue!80!white},
+  after upper=\null\nobreak\hfill\ensuremath{\square},
+  colback=white,
+  colframe=white,
+  coltitle=black,
+  fonttitle=\it,
+  parbox=false,
+  after skip=12pt
+}{pf}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+    frame=tb,
+    language=Python,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=none,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=3
+}
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{8pt}
+
+\setcounter{secnumdepth}{2}
+\renewcommand\thesection{P.\arabic{section}.}
+\renewcommand\thesubsection{(\alph{subsection})}
+
+
+\begin{document}
+
+\begin{center}
+    {\Large\textbf{Yale University}}\\
+    \vspace{3mm}
+    {\Large\textbf{CPSC 516, Spring 2023}}\\
+    \vspace{2mm}
+    {\Large\textbf{Assignment 5}}\\
+    \vspace{3mm}
+    \textbf{Chang Feng (Felix) Zhou cz397}
+\end{center}
+
+\section{}
+\subsection{}
+From our work in class,
+we know that $\grad^2 f\succeq mI$ implies that $f$ is $m$-strongly convex.
+This yields the inequality
+\[
+  f(y) - [f(x) + \iprod{\grad f(x), y-x}] \geq \frac{m}2 \norm{y-x}_2^2
+\]
+by the definition of strong convexity.
+
+On the other hand,
+we know by the second order Taylor expansion about $x$ that
+\begin{align*}
+  f(y)
+  &= f(x) + \iprod{\grad f(x), y-x} + \frac12 (y-x)^T \grad^2 f(\xi) (y-x) &&\xi\in [x, y] \\
+  f(y) - f(x) + \iprod{\grad f(x), x-y}
+  &\leq \frac{M}2 \norm{y-x}_2^2. &&MI \succeq \grad^2 f
+\end{align*}
+This shows both inequalities.
+
+\subsection{}
+Suppose $f(z^*) = y^*$
+and consider the inequality from P.1.(a)
+\[
+  y^*\leq f(z) \leq f(x) + \iprod{\grad f(x), z-x} + \frac{M}2 \norm{z-x}_2^2.
+\]
+Let us minimize the RHS with respect to $z$ by taking the derivative and setting it to 0.
+We must have
+\begin{align*}
+  \grad f(x) + M[z-x] &= 0 \\
+  z &= x - \frac1M \grad f(x).
+\end{align*}
+Substituting this particular value of $z$ to the RHS above yields
+\begin{align*}
+  &f(x) + \iprod*{\grad f(x), -\frac1M \grad f(x)} + \frac1{2M} \norm{\grad f(x)}_2^2 \\
+  &= f(x) - \frac1{2M} \norm{\grad f(x)}_2^2
+\end{align*}
+which is one of the desired inequalities.
+
+To see the other inequality,
+We note that we wish to prove
+\[
+  \frac1{2m} \norm{\grad f(x)}_2^2
+  \geq [f(x) - f(z^*)]
+\]
+which is known as the \emph{Polyak-Lojasiewicz (PL)} condition.
+
+By the definition of strong convexity,
+\begin{align*}
+  f(x) - f(z^*)
+  &\leq \iprod{\grad f(x), x-z^*} - \frac{m}2 \norm{x-z^*}_2^2 \\
+  &= \iprod{\grad f(x), x-z^*} - \frac{m}2 \norm{x-z^*}_2^2 - \frac1{2m} \norm{\grad f(x)}_2^2 + \frac1{2m} \norm{\grad f(x)}_2^2 \\
+  &= -\frac12 \norm*{\sqrt m (x-z^*) - \frac1{\sqrt m} \grad f(x)}_2^2 + \frac1{2m} \norm{\grad f(x)}_2^2 \\
+  &\leq \frac1{2m} \norm{\grad f(x)}_2^2.
+\end{align*}
+
+Having shown both inequalities,
+we conclude the proof.
+
+\subsection{}
+In P.1.(b),
+we have shown that
+\[
+  f(z) \leq f(x) - \frac1{2M} \norm{\grad f(x)}_2^2
+\]
+for $z := x - \frac1M \grad f(x)$.
+
+But since we chose the step size $\alpha$ to minimize $f(x_{t+1})$,
+it must be at least as good as $\alpha = \frac1M$.
+Thus
+\[
+  f(x_{t+1})\leq f(x_t) - \frac1M \norm{\grad f(x_t)}_2^2
+\]
+as desired.
+
+\subsection{}
+We argue by induction,
+the base case
+\[
+  f(x_0) - y^* \leq 1\cdot [f(x_0) - y^*]
+\]
+holds trivially.
+Suppose it holds up to some $t$
+and consider $f(x_{t+1}) - y^*$.
+
+We have
+\begin{align*}
+  f(x_{t+1}) - y^*
+  &= f(x_{t+1}) - f(x_t) + f(x_t) - y^* \\
+  &\leq f(x_t) - y^* - \frac1{2M} \norm{\grad f(x_t)}_2^2 &&\text{P.1.(c)} \\
+  &\leq f(x_t) - y^* - \frac{m}M [f(x_t) - y^*] &&\text{P.1.(b) LHS} \\
+  &= \left( 1-\frac{m}M \right) [f(x_t) - y^*] \\
+  &= \left( 1-\frac{m}M \right)^{t+1} [f(x_0) - y^*]. &&\text{induction hypothesis}
+\end{align*}
+
+By induction,
+we conclude the proof.
+
+The number of iterations to reach $\varepsilon$ error can be computed as follows
+\begin{align*}
+  \left( 1-\frac{m}M \right)^t [f(x_0) - y^*]
+  &\leq \exp(-mt/M) [f(x_0) - y^*] &&1-x\leq e^{-x} \\
+  &\leq \varepsilon \\
+  -\frac{mt}{M} + \log[f(x_0) - y^*] &\leq \log \varepsilon \\
+  t &\geq \frac{M}{m} \log\frac{f(x_0) - y^*}{\varepsilon}.
+\end{align*}
+
+\subsection{}
+Suppose we are given $A, b$ as input.
+
+Consider the minimization problem
+\begin{align*}
+  &\min \norm{Ax - b}_2^2 \\
+  x &\in \R^n
+\end{align*}
+
+The objective is the composition of an affine function
+and a convex, separable, and non-decreasing (in each coordinate) function,
+which is therefore convex.
+
+We explicitly compute its first and second derivatives
+\begin{align*}
+  \frac{d}{dx} [Ax+b]^T[Ax + b]
+  &= \frac{d}{dx} xA^2x + 2x^TAb + b^Tb \\
+  &= 2 A^2x + 2Ab \\
+  \frac{d^2}{dx^2}
+  &= 2A^2.
+\end{align*}
+The objective is certainly twice differentiable,
+and since the eigenvalues of $A^2$ are just the eigenvalues of $A$ squared,
+\[
+  \lambda_1(A)^2 \leq \grad f^2 \leq \lambda_n(A)^2.
+\]
+
+By our work above,
+if we start with an initial solution $x_0 := 0$
+and run gradient descent with step size $\alpha = \frac1{\lambda_n(A)^2}$,
+this yields a solution $x$ such that $\norm{Ax-b}_2^2 \leq \varepsilon$ after
+\[
+  T = O\left( \frac{\lambda_n(A)^2}{\lambda_1(A)^2} \log\frac{\norm{b}_2^2}{\varepsilon} \right)
+\]
+iterations.
+In each iteration,
+we need to compute the gradient and subtract it from the current iterate.
+The number of arithmetic operations is dominated by the gradient computation $A(Ax)$,
+which requires $O(n^2)$ operations if we compute $Ax$ and then $A(Ax)$.
+
+Thus the algorithm terminates after performing
+\[
+  O(n^2 T)
+  = O\left( n^2 \kappa^2 \log \frac{\norm{b}_2^2}{\varepsilon} \right)
+\]
+arithmetic operations.
+
+\clearpage
+\section{}
+
+
+\end{document}
