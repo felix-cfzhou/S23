@@ -77,6 +77,7 @@
 \DeclareMathOperator{\Diag}{Diag}
 \DeclareMathOperator{\Op}{op}
 \DeclareMathOperator{\adj}{adj}
+\DeclareMathOperator{\row}{row}
 
 \newcommand{\code}[1]{\lstinline{#1}}
 
@@ -363,6 +364,56 @@ arithmetic operations.
 
 \clearpage
 \section{}
+\begin{lem}{}{least-squares}
+  $(BB^T)^\dagger Bg$ is a minimizer of the optimization problem
+  \[
+    \min_{y\in \R^n} \norm{B^Ty - g}_2^2.
+  \]
+  Thus $B^T(BB^T)^\dagger Bg$ is the Euclidean projection of $g$ onto the row space of $B$.
+\end{lem}
 
+\begin{pf}{\Cref{lem:least-squares}}{}
+  The objective function is a composition of an affine (convex) function
+  with a convex, separable, and coordinate-wise non-decreasing function,
+  which is therefore convex.
+  We can thus solve this problem by taking the gradient and setting it to zero.
+
+  The objective is equivalent to
+  \begin{align*}
+    (B^Ty - g)^T(B^Ty - g)
+    &= y^TBB^Ty - 2g^TB^Ty - g^Tg.
+  \end{align*}
+  Taking the derivative and setting it to 0 yields
+  \begin{align*}
+    2y^TBB^T - 2g^TB^T &= 0 \\
+    y &= (BB^T)^\dagger Bg.
+  \end{align*}
+\end{pf}
+
+Recall from elmentary linear algebra that the kernel is the orthogonal complement of the rowspace
+so that we can write
+\[
+  \R^m = \ker B \oplus \row(B).
+\]
+In particular,
+if $r := \rank B$,
+we can find an orthonormal basis of $\R^m$,
+say $v_1, \dots, v_r, w_1, \dots, w_{m-r}$,
+where $v_i\in \row(B), w_j\in \ker B$.
+Thus we can write
+\[
+  g = \sum_{i=1}^r \iprod{g, v_i} v_i + \sum_{j=1}^{m-r} \iprod{g, w_j} w_j.
+\]
+
+By elementary linear algebra,
+\begin{align*}
+  x_g &= \sum_{i=1}^r \iprod{g, v_i} v_i \\
+  \Pi g &= \sum_{j=1}^{m-r} \iprod{g, w_j} w_j.
+\end{align*}
+Thus
+\[
+  x_g + \Pi g = g
+\]
+as desired.
 
 \end{document}
