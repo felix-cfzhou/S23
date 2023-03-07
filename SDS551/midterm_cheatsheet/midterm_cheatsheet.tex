@@ -1,6 +1,6 @@
 \documentclass[10pt]{article} 
 
-\usepackage{fullpage}
+% \usepackage{fullpage}
 \usepackage{bookmark}
 \usepackage[a4paper,landscape,margin=0.25in]{geometry}
 \usepackage{multicol}
@@ -76,6 +76,7 @@
 \DeclareMathOperator{\Po}{Po}
 \DeclareMathOperator{\Be}{Be}
 \DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Exp}{Exp}
 
 \newcommand{\code}[1]{\lstinline{#1}}
 
@@ -187,7 +188,7 @@
 }
 
 \setlength\parindent{0pt}
-\setlength{\parskip}{0pt}
+\setlength{\parskip}{2pt}
 
 \iffalse
 \setcounter{secnumdepth}{2}
@@ -216,20 +217,150 @@ Chang Feng (Felix) Zhou
 cz397
 
 \subsection*{Random Walks}
-test
+- $S_n :+ S_0 + \sum_{j=1}^n X_j$
+
+- $T$ stopping time boundary $a < b$ \\
+- $\P\set{T=\infty\mid S_0=i} = 0$ \\
+- $\P\set{S_T = b\mid S_0=i} = \frac{i-a}{b-a}$ \\
+- $\E\left[ T\mid S_0=i \right] = (i-a)(b-i)$
+
+- $T_a := \min\set{n: S_n=a}$ \\
+- For $0=a<b$,
+$\set{S_T=0}\sset \set{T_0<\infty}$ \\
+- $\P\set{T_0<\infty\mid S_0=i}\geq \P\set{S_T=0\mid S_0=i} = 1-\frac{i}b\to 1$ \\
+- $\E\left[ T_0\mid S_0=i \right] = \lim_{b\to \infty} \E\left[ T\mid S_0=i \right] \to \infty\cdot \delta_{i, 0}$
+
 
 \section*{Branching Processes}
-test
+- $X_0 = 1, X_{n+1} = \sum_{i=1}^{X_n} X_{n, i}$
+where $X_{n, i}: \Omega\to \N$ is iid
+
+- $\E[X_{n+1}] = \mu, \E[X_n] = \mu^{n+1}, \mu = \E[X_{n, i}]$
+
+- $\eta_n := \P\set{X_n=0}$ \\
+- $\eta_{n+1} = \sum_{k\geq 0} p_k \eta_n^k =: g(\eta_n)$ \\
+- $\eta = g(\eta)$ fixed point \\
+- $g(1) = 1, g'(1) = \mu, g''(x)\geq 0$
 
 \subsection*{Poisson Processes}
-test
+- $Z\sim \Po(\lambda)$ \\
+- $\P\set{Z=k} = e^{-\lambda} \lambda^k / k!$ \\
+- $\E[Z] = \lambda, \Var[Z] = \lambda$
+
+- \emph{Counting Process}: \\
+1) $N_0 = 0$,
+2) $N_t$ increasing in $t$,
+3) Increase at most 1
+
+- \emph{Poisson Process} \\
+1) $N_t\sim \Po(\lambda t)$,
+2) independent increments,
+3) $N_t - N_s\eq{d} N_{t-s}$
+
+- $T_k$: $k$-th arrival time \\
+- $N_t$: count at time $t$ \\
+- $\set{T_k\leq t} \equiv \set{N_t\geq k}$
+
+- $T_k\sim \Gamma(k, \lambda)$ \\
+- $\E[T_k] = k/\lambda, \Var[T_k] = k/\lambda^2$
+
+- $N_t^{(i)}$ iid Poisson process with params $\lambda_i$, \\
+$\sum_i N_t^{(i)}$ Poisson process with param $\sum_i \lambda_i$
+
+- $R_t$ Poisson process rate $\lambda$, \\
+subsample $k$-th arrival with prob $p\in \Delta^k$, \\
+$R_t^{(1)}, \dots, R_t^{(k)}$ ind. Poisson process with params $p_i\lambda$
+
+- $X\sim \Exp(\mu), Y\sim \Exp(\gamma)$ ind.,
+$\P\set{X\land Y = X} = \mu/(\mu+\gamma)$
+
+- $N_t$ Poisson process param $\lambda(t)$ if \\
+1) independent increments,
+2) $N_t - N_s\sim \Po\left( \int_s^t \lambda(u)du \right)$ for $t\geq s$
 
 \subsection*{Markov Chains}
-test
+- \emph{Time-homogeneous Markov chain}, \\
+$\P\set{X_{n+1}=j\mid \forall 0\leq k\leq n, X_k=i_k} \\
+= \P\set{X_{n+1}=j\mid X_n=i_n}$ \\
+- \underline{thm:} $P_{ij}(s) = \delta_{ij} + F_{ij}(s) P_{ij}(s)$
+
+- \emph{recurrent state} $i$ if $\P_i\set{\exists n\geq 1, X_n=i} = 1$ \\
+- \underline{lem:} If $\sum_n P_{jj}(n) = \infty$, \\
+a) $j$ is recurrent,
+b) $\sum_n P_{ij}(n) = \infty$ for all $i$ $f_{ij} > 0$
+
+- \emph{trasient state} $i$ if $\P_i\set{\exists n\geq 1, X_n=i} < 1$
+- \underline{lem:} If $\sum_n P_{jj}(n) < \infty$, \\
+a) $j$ is transient,
+b) $\sum_n P_{ij}(n) < \infty$ for all $i$ \\
+- If $j$ transient,
+$\lim_n P_{ij}(n) = 0$ for all $i$
+
+- recurrent $j$ \emph{null-recurrent} if $\E_i \min\set{n\geq 1: X_n=j} = \infty$,
+else \emph{positive-recurrent} \\
+- $j$ null-recurrent $\iff$ $P_{ii}(n)\to 0$
+
+- \emph{period} state $j$:
+$d(j) = \gcd\set{n: P_{jj}(n) > 0}$ \\
+- $j$ aperiodic if $d(j) = 1$
+
+- $i$ communicates with $j$,
+$i\to j$ if $\exists m, P_{ij}(m) > 0$
+
+- \underline{thm:} If $i\leftrightarrow j$,
+1) $d(i) = d(j)$,
+2) $i$ transient $\iff$ $j$
+3) $i$ null-recurrent $\iff$ $j$
+
+- $C\sset S$ is \emph{closed} if cannot transition out, \\
+\emph{irreducible} if $i\leftrightarrow j$ $\forall i, j\in C$
+- \underline{lem:} If $\card S < \infty$,
+a) $\geq 1$ recurrent state,
+b) all recurrent states are positive \\
+- \underline{thm:} Irreducible MC has stationary distribution
+$\iff$ all states positive recurrent,
+then $\pi_i = 1/\mu_i$ uniquely (mean recurrent time) \\
+- \underline{thm:} Irreducible, aperiodic MC satisfies $P_{ij}(n)\to 1/\mu_j$ \\
+- \underline{thm:} Irrreducible, finite, aperiodic MC
+has $\lambda_1 = 1$ and $\abs{\lambda_r} < 1$ for all $r > 1$ \\
+- $\forall T\sset S,
+\sum_{i\in T, j\notin T} \pi_i P_{ij}
+= \sum_{i\in T, j\notin T} \pi_j P_{ji}$
+
+- Irreducible, aperiodic, positive-recurrent MC is \emph{ergodic}
+
+- \underline{thm:} RW on $G$ aperiodic $\iff$ $G$ not bipartite \\
+- \underline{thm:} RW on conneted non-bipartite graph $\to \pi_v = d(v) / (2\card E)$
+
+- $X_n$ Irreducible, positive-recurrent MC, stationary $\pi$, $X_0\sim \pi$,
+\emph{reversed chain} $Y_n := X_{N-m}$ \\
+- $Y_n$ is MC with transition $Q_{ij} = \pi_j P_{ji} / \pi_i$ \\
+- $X_n$ \emph{reversible} if $\pi_j P_{ji} = \pi_i P_{ij}$ \\
+- $X_n$ reversible wrt $\pi$ then $\pi$ stationary distribution
 
 \subsection*{MCMC}
 test
 
+\subsection*{Useful Facts}
+- $\sum_{i=1}^n i = n(n+1)/2$
+
+- $\sum_{i=1}^n i^2 = (n+1)(2n+1)/6$
+
+- For $N:\Omega\to \N$, \\
+- $\E[N] = \sum_{n\geq 1} \P\set{N\geq n}$\\
+- $\E[N^2] = \sum_{n\geq 1} \P\set{N\geq n} \left[ n^2 - (n-1)^2 \right]$
+
+- Catalan number
+$C_n = \frac1{n+1}\binom{2n}{n} = \frac{(2n)!}{(n+1)! n!} = \prod_{k=2}^n \frac{n+k}k$
+
+- \emph{Convolution} of seq $a_n, b_n$ is
+$c_n := \sum_{i=0}^n a_i b_{n-i}$ \\
+generating func $G_c(s) = G_a(s)\cdot G_b(s)$
+
+- Generating func of $X:\Omega\to \N$, \\
+$G_X(s) := \E[s^X] =\sum_{i\geq 0} \P\set{X=i} s^i$
+
+- Sum of MC not necessarily a MC
 \end{multicols}
 
 \end{document}
