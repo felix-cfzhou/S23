@@ -231,7 +231,7 @@ $\set{S_T=0}\sset \set{T_0<\infty}$ \\
 - $\E\left[ T_0\mid S_0=i \right] = \lim_{b\to \infty} \E\left[ T\mid S_0=i \right] \to \infty\cdot \delta_{i, 0}$
 
 
-\section*{Branching Processes}
+\subsection*{Branching Processes}
 - $X_0 = 1, X_{n+1} = \sum_{i=1}^{X_n} X_{n, i}$
 where $X_{n, i}: \Omega\to \N$ is iid
 
@@ -289,32 +289,32 @@ $\P\set{X_{n+1}=j\mid \forall 0\leq k\leq n, X_k=i_k} \\
 a) $j$ is recurrent,
 b) $\sum_n P_{ij}(n) = \infty$ for all $i$ $f_{ij} > 0$
 
-- \emph{trasient state} $i$ if $\P_i\set{\exists n\geq 1, X_n=i} < 1$
+- \emph{transient state} $i$ if $\P_i\set{\exists n\geq 1, X_n=i} < 1$ \\
 - \underline{lem:} If $\sum_n P_{jj}(n) < \infty$, \\
 a) $j$ is transient,
 b) $\sum_n P_{ij}(n) < \infty$ for all $i$ \\
 - If $j$ transient,
 $\lim_n P_{ij}(n) = 0$ for all $i$
 
-- recurrent $j$ \emph{null-recurrent} if $\E_i \min\set{n\geq 1: X_n=j} = \infty$,
+- recurrent $j$ \emph{null-recurrent} if $\E_i \min\set{n\geq 1: X_n=i} = \infty$,
 else \emph{positive-recurrent} \\
 - $j$ null-recurrent $\iff$ $P_{ii}(n)\to 0$
 
 - \emph{period} state $j$:
 $d(j) = \gcd\set{n: P_{jj}(n) > 0}$ \\
-- $j$ aperiodic if $d(j) = 1$
+$j$ \emph{aperiodic} if $d(j) = 1$
 
 - $i$ communicates with $j$,
 $i\to j$ if $\exists m, P_{ij}(m) > 0$
 
-- \underline{thm:} If $i\leftrightarrow j$,
+- \underline{thm:} If $i\leftrightarrow j$, \\
 1) $d(i) = d(j)$,
 2) $i$ transient $\iff$ $j$
 3) $i$ null-recurrent $\iff$ $j$
 
 - $C\sset S$ is \emph{closed} if cannot transition out, \\
-\emph{irreducible} if $i\leftrightarrow j$ $\forall i, j\in C$
-- \underline{lem:} If $\card S < \infty$,
+\emph{irreducible} if $i\leftrightarrow j$ $\forall i, j\in C$ \\
+- \underline{lem:} If $\card S < \infty$, \\
 a) $\geq 1$ recurrent state,
 b) all recurrent states are positive \\
 - \underline{thm:} Irreducible MC has stationary distribution
@@ -327,7 +327,7 @@ has $\lambda_1 = 1$ and $\abs{\lambda_r} < 1$ for all $r > 1$ \\
 \sum_{i\in T, j\notin T} \pi_i P_{ij}
 = \sum_{i\in T, j\notin T} \pi_j P_{ji}$
 
-- Irreducible, aperiodic, positive-recurrent MC is \emph{ergodic}
+- \emph{ergodic:} Irreducible, aperiodic, positive-recurrent MC
 
 - \underline{thm:} RW on $G$ aperiodic $\iff$ $G$ not bipartite \\
 - \underline{thm:} RW on conneted non-bipartite graph $\to \pi_v = d(v) / (2\card E)$
@@ -339,7 +339,34 @@ has $\lambda_1 = 1$ and $\abs{\lambda_r} < 1$ for all $r > 1$ \\
 - $X_n$ reversible wrt $\pi$ then $\pi$ stationary distribution
 
 \subsection*{MCMC}
-test
+Wish to ``tweak'' MC so that stationary distribution is the desired $\pi$.
+
+- \emph{Metropolis algorithm:} Given MC with symmetric transition $\Psi_{x, y}$, \\
+$P_{x, y} =
+\begin{cases}
+  \Psi_{x, y}\min (1, \pi_y/\pi_x), &y\neq x \\
+  1-\sum_{z\neq x} P_{x, z}, &y=x
+\end{cases}
+$
+
+- \emph{Metropolis-Hastings filter:} Given MC with transition $\Psi_{x, y}$, \\
+$P_{x, y} =
+\begin{cases}
+  \Psi_{x, y}\min (1, \pi_y/\pi_x\cdot \Psi_{y, x}/\Psi_{x, y}), &y\neq x \\
+  1-\sum_{z\neq x} P_{x, z}, &y=x
+\end{cases}
+$
+
+- \emph{Gibbs sampler:} State $S$, $G = (V, E)$,
+configurations $\Omega\sset S^V$.
+Define $\Omega(x, v) := \set{y\in \Omega: \forall w\neq v, y(w) = x(w)}$. \\
+1) Choose $v\in V$ at random, \\
+2) $P_{x, y}^v =
+\begin{cases}
+  \pi(y)/\pi(\Omega(x, v)), &y\in \Omega(x, v) \\
+  0, &y\notin \Omega(x, v)
+\end{cases}
+$
 
 \subsection*{Useful Facts}
 - $\sum_{i=1}^n i = n(n+1)/2$
@@ -347,8 +374,8 @@ test
 - $\sum_{i=1}^n i^2 = (n+1)(2n+1)/6$
 
 - For $N:\Omega\to \N$, \\
-- $\E[N] = \sum_{n\geq 1} \P\set{N\geq n}$\\
-- $\E[N^2] = \sum_{n\geq 1} \P\set{N\geq n} \left[ n^2 - (n-1)^2 \right]$
+1) $\E[N] = \sum_{n\geq 1} \P\set{N\geq n}$ \\
+2) $\E[N^2] = \sum_{n\geq 1} \P\set{N\geq n} \left[ n^2 - (n-1)^2 \right]$
 
 - Catalan number
 $C_n = \frac1{n+1}\binom{2n}{n} = \frac{(2n)!}{(n+1)! n!} = \prod_{k=2}^n \frac{n+k}k$
